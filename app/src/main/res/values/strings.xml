@@ -1,0 +1,112 @@
+<resources>
+    <string name="app_name">MarritLeenstra-pset62</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="auth_succes">Created user</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="notification">Reminder</string>
+
+    <!-- Strings related to home fragment -->
+    <string name="question">Did you eat vegetarian today?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="clicked_yes">Good job! Another vegetarian day!</string>
+    <string name="clicked_no">Don\'t worry! Try again tomorrow!</string>
+    <string name="daily_recommendations">Your daily recipe recommendations!</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_displayname">Display name (optional)</string>
+    <string name="prompt_password_signin">Password</string>
+    <string name="prompt_password">Password (minimal 6 characters)</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_register">Register</string>
+    <string name="action_register_short">Register</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_repeat">The passwords are not the same</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="no_account">I don\'t have an account yet!</string>
+    <string name="welcome_register">Register as a new user</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="forgot_password">Oops... I forgot my password.</string>
+    <string name="error_user_exists">Email is already registered</string>
+
+
+    <!--Strings related to bottom navigation-->
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_signin">SignInActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_user">Username</string>
+    <string name="title_community">Community</string>
+
+    <!--Strings related to user fragment layout-->
+    <string name="run_streak">Current Run streak</string>
+    <string name="days">days</string>
+    <string name="total_days">Total days eaten vegetarian</string>
+    <string name="total_CO2">Total CO2 emission avoided</string>
+    <string name="total_animals">Total animals saved</string>
+
+    <!--Strings related to community fragment layout-->
+    <string name="community">This is how the community is keeping up!</string>
+    <string name="total_participants">Total participants</string>
+    <string name="total_participants_today">Total people eating vegetarian today</string>
+
+    <!--Strings related to forgot password activity layout-->
+    <string name="new_password_form">Reset your password</string>
+    <string name="send">Send password reset email</string>
+    <string name="send_email">Sent password reset email</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!--Strings related to settings-->
+    <string name="change_email">Email</string>
+    <string name="change_displayname">Display Name</string>
+    <string name="change_password">Password</string>
+    <string name="unsubscribe">Unsubscribe</string>
+    <string name="change">Change</string>
+    <string name="new_email">New email address</string>
+    <string name="new_password">New password</string>
+    <string name="logout">Log out</string>
+    <string name="dialog_unsubscribe">Unsubscribing will delete your account and all personal
+        information. You will not be able to restore your account. Do you still want to
+        unsubscribe?</string>
+
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Strings related to RecipeFragment -->
+    <string name="ingredients">ingredients</string>
+    <string name="Ingredients">Ingredients</string>
+    <string name="view_directions">View directions</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

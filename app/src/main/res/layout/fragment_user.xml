@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".UserFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp">
+
+                <ImageView
+                    android:id="@+id/IV_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_user"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="16dp"/>
+
+                <TextView
+                    android:id="@+id/TV_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/IV_user"
+                    android:layout_centerHorizontal="true"/>
+
+                <ImageButton
+                    android:id="@+id/IB_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_settings_old"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"/>
+
+            </RelativeLayout>
+
+            <!-- source vegetarian background:
+            https://ow.roocdn.com/assets/images/campaign-landing-pages/hero/vegetarian.jpg -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/vegetarian_background">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/scrim_full"/>
+
+                <TextView
+                    android:id="@+id/TV_run_streak"
+                    android:paddingTop="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="@string/run_streak"
+                    android:layout_centerHorizontal="true"/>
+
+                <TextView
+                    android:id="@+id/TV_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp"
+                    android:text="20"
+                    android:textColor="@color/white"
+                    android:layout_below="@id/TV_run_streak"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="50sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV_counter"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/white"
+                    android:paddingBottom="30dp"
+                    android:text="@string/days"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/TV_total_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="@string/total_days"/>
+
+                <TextView
+                    android:id="@+id/TV_number_total_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV_total_days"
+                    android:paddingBottom="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="30sp"
+                    android:text="22"/>
+
+                <TextView
+                    android:id="@+id/TV_total_animals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_below="@id/TV_number_total_days"
+                    android:text="@string/total_animals"/>
+
+                <TextView
+                    android:id="@+id/TV_number_total_animals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV_total_animals"
+                    android:paddingBottom="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="30sp"
+                    android:text="1"/>
+
+                <TextView
+                    android:id="@+id/TV_total_CO2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_below="@id/TV_number_total_animals"
+                    android:text="@string/total_CO2"/>
+
+                <TextView
+                    android:id="@+id/TV_number_total_CO2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV_total_CO2"
+                    android:paddingBottom="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="30sp"
+                    android:text="100"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

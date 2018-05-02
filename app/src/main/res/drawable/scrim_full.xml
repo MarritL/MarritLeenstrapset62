@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Source: https://stackoverflow.com/questions/29719528/how-to-add-text-scrim-in-android -->
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid
+        android:color="#88000000"/>
+</shape>

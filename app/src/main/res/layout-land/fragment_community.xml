@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/TV_community"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/community"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+    <!-- source vegetarian background:
+    https://ow.roocdn.com/assets/images/campaign-landing-pages/hero/vegetarian.jpg -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/vegetarian_background"
+            android:layout_weight="3">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/scrim_full"/>
+
+            <TextView
+                android:id="@+id/TV_total_days"
+                android:paddingTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/total_days"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:id="@+id/TV_number_total_days_community"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:text="20"
+                android:textColor="@color/white"
+                android:layout_below="@id/TV_total_days"
+                android:layout_centerHorizontal="true"
+                android:textSize="50sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/TV_number_total_days_community"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:paddingBottom="30dp"
+                android:text="@string/days"/>
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/TV_total_animals_community"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/total_animals"/>
+
+                <TextView
+                    android:id="@+id/TV_number_total_animals_community"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV_total_animals_community"
+                    android:paddingBottom="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="30sp"
+                    android:text="1"/>
+
+                <TextView
+                    android:id="@+id/TV_total_CO2_community"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_below="@id/TV_number_total_animals_community"
+                    android:text="@string/total_CO2"/>
+
+                <TextView
+                    android:id="@+id/TV_number_total_CO2_community"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV_total_CO2_community"
+                    android:paddingBottom="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="30sp"
+                    android:text="100"/>
+
+                <TextView
+                    android:id="@+id/TV_total_participants_today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_below="@id/TV_number_total_CO2_community"
+                    android:text="@string/total_participants_today"/>
+
+                <TextView
+                    android:id="@+id/TV_number_total_participants_today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV_total_participants_today"
+                    android:paddingBottom="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="30sp"
+                    android:text="980"/>
+
+
+                <TextView
+                    android:id="@+id/TV_total_participants"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_below="@id/TV_number_total_participants_today"
+                    android:text="@string/total_participants"/>
+
+                <TextView
+                    android:id="@+id/TV_number_total_participants"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TV_total_participants"
+                    android:paddingBottom="8dp"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="30sp"
+                    android:text="1000"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>
