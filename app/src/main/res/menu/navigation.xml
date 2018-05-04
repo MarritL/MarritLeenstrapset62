@@ -16,4 +16,10 @@
         android:icon="@drawable/ic_community"
         android:title="@string/title_community"/>
 
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_settings_old"
+        android:title="@string/title_activity_settings"
+        />
+
 </menu>
