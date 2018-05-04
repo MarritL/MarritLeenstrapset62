@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/IV_detail_recipe"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"/>
+
+        <RelativeLayout
+            android:id="@+id/RL_details1"
+            android:layout_width="300dp"
+            android:layout_height="55dp"
+            android:layout_alignBottom="@id/IV_detail_recipe"
+            android:background="@drawable/scrim_full">
+
+            <TextView
+                android:id="@+id/TV_detail_number_ingredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/TV_detail_sourcename"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:text="9"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/ingredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/TV_detail_number_ingredients"
+                android:layout_marginLeft="3dp"
+                android:layout_toEndOf="@id/TV_detail_number_ingredients"
+                android:text="@string/ingredients"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/TV_detail_sourcename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:text="sourceName"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/TV_detail_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="8dp"
+                android:text="120 min"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:id="@+id/TV_detail_recipename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/TV_detail_sourcename"
+                android:layout_alignStart="@+id/TV_detail_sourcename"
+                android:text="recipename"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"/>
+
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:id="@+id/TV_ingredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@id/IV_detail_recipe"
+            android:layout_alignParentEnd="true"
+            android:text="@string/Ingredients"
+            android:textSize="20sp"/>
+
+        <ListView
+            android:id="@+id/LV_detail_ingredientslist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/TV_ingredients"
+            android:layout_above="@id/Button_click_for_details"
+            android:layout_below="@id/TV_ingredients">
+        </ListView>
+
+        <Button
+            android:id="@+id/Button_click_for_details"
+            style="?android:textAppearanceSmall"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/TV_ingredients"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:text="@string/view_directions"
+            android:textStyle="bold"/>
+
+</RelativeLayout>
