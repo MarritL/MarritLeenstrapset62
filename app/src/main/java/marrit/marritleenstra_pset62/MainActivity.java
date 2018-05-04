@@ -66,6 +66,20 @@ public class MainActivity extends AppCompatActivity {
                     communityTransaction.commit();
 
                     return true;
+
+                case R.id.navigation_settings:
+
+                    // create new fragment
+                    SettingsFragment settingsFragment = new SettingsFragment();
+
+                    // add the fragment to the 'fragment_container' framelayout
+                    FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
+                    settingsTransaction.replace(R.id.container_fragment, settingsFragment);
+                    settingsTransaction.addToBackStack(null);
+                    settingsTransaction.commit();
+
+                    return true;
+
             }
             return false;
         }
