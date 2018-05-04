@@ -154,7 +154,7 @@ public class SignInActivity extends AppCompatActivity {
                                 Log.w(TAG, "signInWithEmail:failed", task.getException());
 
                             } else {
-                                Toast.makeText(SignInActivity.this, "signed in",
+                                Toast.makeText(SignInActivity.this, R.string.loading_data,
                                         Toast.LENGTH_SHORT).show();
 
                                 // initialise data used in whole application
@@ -175,7 +175,7 @@ public class SignInActivity extends AppCompatActivity {
                                 }
 
                                 // go to mainActivity
-                                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                Intent intent = new Intent(SignInActivity.this, SplashActivity.class);
                                 SignInActivity.this.startActivity(intent);
                             }
 

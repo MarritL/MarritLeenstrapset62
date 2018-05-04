@@ -63,6 +63,11 @@ public class UserLab {
                     String uid = mFirebaseUser.getUid();
                     mUser = dataSnapshot.child("users").child(uid).getValue(User.class);
 
+                    /*if (savedInstanceState == null) {
+                        Log.d(TAG,"in onDataChange if savedInstancestate is null");
+                        MainActivity.navigation.setSelectedItemId(R.id.navigation_home);
+                    }*/
+
                     // initate community values, all zero when data changed
                     int mSumDays = 0;
                     double mSumAnimals = 0;

@@ -35,6 +35,7 @@
     <string name="repeat_password">Repeat password</string>
     <string name="forgot_password">Oops... I forgot my password.</string>
     <string name="error_user_exists">Email is already registered</string>
+    <string name="loading_data">Loading...</string>
 
 
     <!--Strings related to bottom navigation-->
