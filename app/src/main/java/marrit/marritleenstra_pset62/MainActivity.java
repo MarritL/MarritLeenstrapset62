@@ -98,22 +98,6 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        /*// initialise userdata
-        if (firebaseUser != null){
-            System.out.println(TAG + ": firebaseUser != null");
-
-            // start RecipeLab
-            RecipeLab recipeLab = RecipeLab.getInstance();
-            recipeLab.fillRecipeArray();
-
-            // start UserLab
-            UserLab userLab = UserLab.getInstance();
-            userLab.fillUserData();
-
-            // start CommunityLab
-            CommunityLab communityLab = CommunityLab.getInstance();
-            communityLab.fillCommunityData();
-        }*/
 
        /* if (savedInstanceState == null) {
                     Log.d(TAG,"in onDataChange if savedInstancestate is null");

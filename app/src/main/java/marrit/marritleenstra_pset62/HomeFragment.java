@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -23,7 +25,8 @@ import java.util.ArrayList;
 
 
 /**
-
+ * Created by Marrit on 4-12-2017.
+ * Fragment displaying recipes to the user.
  */
 public class HomeFragment extends Fragment {
 
@@ -121,7 +124,7 @@ public class HomeFragment extends Fragment {
         // attach listeners
         mYesButton.setOnClickListener(new TodayVegetarianClickListener());
         mNoButton.setOnClickListener(new TodayVegetarianClickListener());
-        //TODO: mGridView.setOnItemClickListener(new MyRecipeClickedListener());
+        mGridView.setOnItemClickListener(new MyRecipeClickedListener());
         mYummlySearch.setOnClickListener(new goToSourceOnClick());
 
         return v;
@@ -176,6 +179,30 @@ public class HomeFragment extends Fragment {
                     Intent.ACTION_VIEW,
                     Uri.parse(mSourceUrl));
             startActivity(browserIntent);
+        }
+    }
+
+    private class MyRecipeClickedListener implements GridView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            // get the recipe clicked
+            Recipe mRecipe = (Recipe) parent.getItemAtPosition(position);
+
+            // create new fragment
+            RecipeFragment recipeFragment = new RecipeFragment();
+
+            // add Recipe data
+            Bundle dataRecipe = new Bundle();
+            dataRecipe.putSerializable("RECIPEDATA", mRecipe);
+            recipeFragment.setArguments(dataRecipe);
+
+            // add the fragment to the 'container_fragment' framelayout
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container_fragment, recipeFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     }
 }

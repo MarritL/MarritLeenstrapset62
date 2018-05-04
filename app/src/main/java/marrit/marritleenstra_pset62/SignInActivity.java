@@ -157,7 +157,7 @@ public class SignInActivity extends AppCompatActivity {
                                 Toast.makeText(SignInActivity.this, "signed in",
                                         Toast.LENGTH_SHORT).show();
 
-                                // initialise userdata
+                                // initialise data used in whole application
                                 if (mUser != null){
                                     System.out.println(TAG + ": firebaseUser != null");
 
