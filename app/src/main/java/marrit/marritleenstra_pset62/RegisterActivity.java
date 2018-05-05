@@ -84,17 +84,17 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
     }
 
     // check if user gave valid email
-    public boolean isEmailValid(String email) {
+    public static boolean isEmailValid(String email) {
         return email.contains("@");
     }
 
     // check if user gave valid password
-    private boolean isPasswordValid(String password) {
+    public static boolean isPasswordValid(String password) {
         return password.length() > 5;
     }
 
     // check if user did not make typos in password
-    private boolean isPasswordSame(String password, String repeat) {
+    public static boolean isPasswordSame(String password, String repeat) {
         return password.equals(repeat);
     }
 

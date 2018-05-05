@@ -113,26 +113,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-//        navigation.setSelectedItemId(R.id.navigation_home);
-
-
         if (savedInstanceState == null) {
                     Log.d(TAG,"in onDataChange if savedInstancestate is null");
                     navigation.setSelectedItemId(R.id.navigation_home);
         }
 
     }
-
-    // remember if the app was running already before event like rotation
-//    @Override
-//    protected void onSaveInstanceState(Bundle savedInstanceState) {
-//
-//        Log.d(TAG,"onSaveInstanceState()");
-//        savedInstanceState.putBoolean("ALREADYSTARTED", true);
-//        super.onSaveInstanceState(savedInstanceState);
-//    }
-//
-//    @Override
-//    onRestoreInstanceState
 
 }

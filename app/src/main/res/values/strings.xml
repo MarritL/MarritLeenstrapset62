@@ -66,8 +66,8 @@
     <string name="title_activity_settings">Settings</string>
 
     <!--Strings related to settings-->
-    <string name="change_email">Email</string>
-    <string name="change_displayname">Display Name</string>
+    <string name="change_email">Change email address</string>
+    <string name="change_displayname">New Display Name</string>
     <string name="change_password">Password</string>
     <string name="unsubscribe">Unsubscribe</string>
     <string name="change">Change</string>
@@ -77,37 +77,13 @@
     <string name="dialog_unsubscribe">Unsubscribing will delete your account and all personal
         information. You will not be able to restore your account. Do you still want to
         unsubscribe?</string>
-
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
+    <string name="use_new_emailadress">Use new emailadress with next sign in</string>
+    <string name="use_new_password">Use new password with next sign in</string>
 
     <!-- Strings related to RecipeFragment -->
     <string name="ingredients">ingredients</string>
     <string name="Ingredients">Ingredients</string>
     <string name="view_directions">View directions</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
