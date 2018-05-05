@@ -168,6 +168,7 @@ public class SignInActivity extends AppCompatActivity {
                                     // start UserLab
                                     UserLab userLab = UserLab.getInstance();
                                     userLab.fillUserData();
+                                    userLab.getUser(mUser.getUid());
 
                                     // start CommunityLab
                                     CommunityLab communityLab = CommunityLab.getInstance();

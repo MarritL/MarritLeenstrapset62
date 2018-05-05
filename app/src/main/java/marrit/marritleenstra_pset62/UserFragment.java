@@ -38,11 +38,12 @@ public class UserFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // get user data
-        String userID = getArguments().getString("USERDATA");
+        //String userID = getArguments().getString("USERDATA");
+        mUser = (User) getArguments().getSerializable("USERDATA");
 
-        UserLab userLab = UserLab.getInstance();
+       /* UserLab userLab = UserLab.getInstance();
         mUser = userLab.getUser(userID);
-        System.out.println(TAG + ": user= " + mUser);
+        System.out.println(TAG + ": user= " + mUser);*/
 
     }
 

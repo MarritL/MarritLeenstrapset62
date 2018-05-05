@@ -1,14 +1,19 @@
 package marrit.marritleenstra_pset62;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,60 +23,53 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ChangeEmailActivity extends AppCompatActivity {
+/**
+ * Created by Marrit 5-52018
+ * Fragment where user can change his email adress
+ */
+public class ChangeEmailFragment extends Fragment {
 
     // variables
-    private static final String TAG = "CHANGEEMAILACTIVITY";
-    private String mUid;
+    private static final String TAG = "CHANGEEMAILFRAGMENT";
 
     // UI references
     EditText mNewEmail;
     Button mChangeEmail;
+    String mUID;
+    String mEmail;
 
     // firebase references
     private DatabaseReference mDatabase;
     private FirebaseUser mFirebaseUser;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
+
+    public ChangeEmailFragment() {
+        // Required empty public constructor
+    }
+
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_change_email);
 
-        // initiate firebase references
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    }
 
-        // make sure user is signed in.
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                mFirebaseUser = firebaseAuth.getCurrentUser();
-                if (mFirebaseUser != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + mFirebaseUser.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                    // go to signinActivity
-                    Intent intent = new Intent(ChangeEmailActivity.this, SignInActivity.class);
-                    ChangeEmailActivity.this.startActivity(intent);
-                    ChangeEmailActivity.this.finish();
-                }
-            }
-        };
-
-        mUid = mFirebaseUser.getUid();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_change_email, container, false);
 
         // initiate UI references
-        mNewEmail = findViewById(R.id.ET_email);
-        mChangeEmail = findViewById(R.id.BUTTON_change_email);
+        mNewEmail = view.findViewById(R.id.ET_email);
+        mChangeEmail = view.findViewById(R.id.BUTTON_change_email);
 
         // set listeners
         mChangeEmail.setOnClickListener(new changeEmailOnClick());
 
-        // manage launch for mainActivity
-        mDatabase.child("users").child(mUid).child("onLaunch").setValue(true);
+
+        return view;
     }
 
     private class changeEmailOnClick implements View.OnClickListener{
@@ -80,21 +78,21 @@ public class ChangeEmailActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             // get current user info
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            final String mUID = user.getUid();
+            mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            mUID = mFirebaseUser.getUid();
 
             boolean cancel = false;
             View focusView = null;
 
             // Check if new email is valid
-            final String email = mNewEmail.getText().toString();
+            mEmail = mNewEmail.getText().toString();
 
             // Check for a valid email address.
-            if (TextUtils.isEmpty(email)) {
+            if (TextUtils.isEmpty(mEmail)) {
                 mNewEmail.setError(getString(R.string.error_field_required));
                 focusView = mNewEmail;
                 cancel = true;
-            } else if (!RegisterActivity.isEmailValid(email)) {
+            } else if (!RegisterActivity.isEmailValid(mEmail)) {
                 mNewEmail.setError(getString(R.string.error_invalid_email));
                 focusView = mNewEmail;
                 cancel = true;
@@ -109,7 +107,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
             else {
                 // change emailadress
                 // block of code from firebase guide on user management
-                user.updateEmail(email)
+                mFirebaseUser.updateEmail(mEmail)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -117,17 +115,16 @@ public class ChangeEmailActivity extends AppCompatActivity {
                                     Log.d(TAG, "User email address updated.");
 
                                     // let the user know that he has to login with the new email adress
-                                    Toast.makeText(ChangeEmailActivity.this, R.string.use_new_emailadress,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), R.string.use_new_emailadress,Toast.LENGTH_SHORT).show();
 
                                     // get database reference
-                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                                    mDatabase = FirebaseDatabase.getInstance().getReference();
 
                                     // update email address in database as well
-                                    mDatabase.child("users").child(mUID).child("email").setValue(email);
+                                    mDatabase.child("users").child(mUID).child("email").setValue(mEmail);
 
                                     // return to settings
-                                    Intent intent = new Intent(ChangeEmailActivity.this, MainActivity.class);
-                                    ChangeEmailActivity.this.startActivity(intent);
+                                    MainActivity.navigation.setSelectedItemId(R.id.navigation_settings);
                                 }
                                 //TODO check if re-authentication is needed
                                 /*else if(!task.isSuccessful()) {
@@ -157,4 +154,6 @@ public class ChangeEmailActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

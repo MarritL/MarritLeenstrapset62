@@ -33,9 +33,8 @@
             android:name=".ForgotPasswordActivity"
             android:parentActivityName=".SignInActivity">
         </activity>
-        <activity android:name=".ChangeEmailActivity">
-        </activity>
-        <activity android:name=".ChangePasswordActivity">
+        <activity android:name=".ChangeEmailActivity"
+                  android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name=".SplashActivity"
                   android:theme="@style/SplashTheme">

@@ -1,13 +1,12 @@
 package marrit.marritleenstra_pset62;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,13 +36,19 @@ public class SettingsFragment extends Fragment {
     TextView mChangeDisplayname;
     TextView mLogOut;
     TextView mUnsubscribe;
+    EditText mDisplayName;
 
     // variables
     private static final String TAG = "SETTINGSFRAGMENT";
+    String mUid;
+    User user;
 
     // firebase references
-    public FirebaseAuth mAuth;
-    public FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
+
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -76,6 +81,11 @@ public class SettingsFragment extends Fragment {
         mLogOut.setOnClickListener(new goToNextActivity());
         mUnsubscribe.setOnClickListener(new unsubscribeClicked());
 
+        // initiate firebase references
+        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mUid = mFirebaseUser.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         return view;
     }
 
@@ -83,22 +93,35 @@ public class SettingsFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Intent newIntent;
-            Activity activity = getActivity();
 
-            //go to right activity
+            //go to right fragment or activity
             if (view == mChangeEmail){
-                newIntent = new Intent(activity, ChangeEmailActivity.class);
-                activity.startActivity(newIntent);
+                // create new fragment
+                ChangeEmailFragment emailFragment = new ChangeEmailFragment();
+
+                // add the fragment to the 'container_fragment' framelayout
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container_fragment, emailFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
             if (view == mChangePassword){
-                newIntent = new Intent(activity, ChangePasswordActivity.class);
-                activity.startActivity(newIntent);
+
+                // create new fragment
+                ChangePasswordFragment passwordFragment = new ChangePasswordFragment();
+
+                // add the fragment to the 'container_fragment' framelayout
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container_fragment, passwordFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
             }
             if (view == mLogOut){
                 FirebaseAuth.getInstance().signOut();
-                newIntent = new Intent(activity, SignInActivity.class);
-                activity.startActivity(newIntent);
+                Intent newIntent = new Intent(getActivity(), SignInActivity.class);
+                getActivity().startActivity(newIntent);
+                getActivity().finish();
             }
         }
     }
@@ -134,29 +157,20 @@ public class SettingsFragment extends Fragment {
 
                 System.out.println(TAG + ": on delete called");
 
-                // get current user info
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                final String mUID = user.getUid();
-
-                // TODO: werkt nog niet delete user also from database
                 // sign-out (before deleting from database)
                 FirebaseAuth.getInstance().signOut();
-
-                // destroy all fragements
-                //MainActivity.getSupportFragmentManager().beginTransaction().remove(UserFragment.class).commit();
 
                 Intent newIntent = new Intent(getActivity(), SignInActivity.class);
                 getActivity().startActivity(newIntent);
 
                 // delete the userdata from the database
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                mDatabase.child("recipes").child(mUID).removeValue();
-                mDatabase.child("users").child(mUID).removeValue();
+                mDatabase.child("recipes").child(mUid).removeValue();
+                mDatabase.child("users").child(mUid).removeValue();
 
                 System.out.println(TAG + ": after database values removed");
 
                 // block of code from firebase guide on user management
-                user.delete()
+                mFirebaseUser.delete()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -185,7 +199,7 @@ public class SettingsFragment extends Fragment {
         View dialogView = inflater.inflate(R.layout.dialog_display_name,null);
         dialogBuilder.setView(dialogView);
 
-        final EditText mDisplayName = dialogView.findViewById(R.id.ET_displayname);
+        mDisplayName = dialogView.findViewById(R.id.ET_displayname);
 
         // Let the user know what the dialog is for
         dialogBuilder.setMessage("Change Display name");
@@ -197,29 +211,16 @@ public class SettingsFragment extends Fragment {
 
                 String mNewDisplayName = mDisplayName.getText().toString();
 
-                // check if user gave To-Do title
-                if (!mNewDisplayName.equals("")) {
-
-                    // get database reference
-                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
-                    // get current user info
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    final String mUID = user.getUid();
-
-                    // update email address in database as well
-                    mDatabase.child("users").child(mUID).child("displayName").setValue(mNewDisplayName);
-
-                    // empty edit-text
-                    mDisplayName.getText().clear();
-
-                } else {
-                    /*mDisplayName.setError(getString(R.string.error_field_required));
-                    View focusView = mDisplayName;
-                    focusView.requestFocus();*/
-                    // TODO: if user gave no title, yell at him with focus etc
-                    Toast.makeText(getActivity(), "Give a display name!", Toast.LENGTH_SHORT).show();
+                // check if user gave displayName
+                if (mNewDisplayName.equals("")) {
+                    // if not set default displayname
+                    mNewDisplayName = mFirebaseUser.getEmail();
+                    mNewDisplayName = mNewDisplayName.split("@")[0];
                 }
+
+                // update displayname in database
+                mDatabase.child("users").child(mUid).child("displayName").setValue(mNewDisplayName);
+                System.out.println(TAG + ": displayname changed");
             }
 
         });

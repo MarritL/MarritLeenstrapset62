@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
     User mUser;
     String mSourceUrl;
     String mLogoUrl;
+    String mUid;
     private static final String TAG = "HOMEFRAGMENT";
 
     // Firebase references
@@ -60,16 +61,23 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // get user data
-        String userID = getArguments().getString("USERDATA");
+        //String userID = getArguments().getString("USERDATA");
+        mUser = (User) getArguments().getSerializable("USERDATA");
+        mUid = mUser.getUID();
 
-        UserLab userLab = UserLab.getInstance();
+        // initiate firebase references
+        // initiate firebase references
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        /*UserLab userLab = UserLab.getInstance();
         mUser = userLab.getUser(userID);
-        System.out.println(TAG + ": user= " + mUser);
+        System.out.println(TAG + ": user= " + mUser);*/
 
         // get recipe data
         RecipeLab recipeLab = RecipeLab.getInstance();
         recipesArrayList = recipeLab.getRecipes();
         System.out.println("HOMEFRAGMENT recipes: " + recipesArrayList);
+
     }
 
     @Override

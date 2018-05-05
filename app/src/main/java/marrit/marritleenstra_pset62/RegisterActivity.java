@@ -187,9 +187,11 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
 
                                 // create user with UID, email and displayname
                                 String displayname = mDisplaynameView.getText().toString();
-                                // if user didn't give displayname use email
+
+                                // if user didn't give displayname use a default
                                 if(displayname.equals("")) {
                                     displayname = email;
+                                    displayname = displayname.split("@")[0];
                                 }
                                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                                 String mUid = null;

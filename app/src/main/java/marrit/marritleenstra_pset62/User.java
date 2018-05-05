@@ -18,6 +18,7 @@ public class User implements Serializable{
     private double mCO2Avoided;
     private double mAnimalsSaved;
     private Boolean mClickedToday;
+    private Boolean mOnLaunch;
 
     // default constructor for FireBase
     public User() {}
@@ -32,6 +33,7 @@ public class User implements Serializable{
         mAnimalsSaved = 0.0;
         mCO2Avoided = 0.0;
         mClickedToday = false;
+        mOnLaunch = true;
     }
 
     // getters and setters
@@ -99,4 +101,11 @@ public class User implements Serializable{
         mClickedToday = clickedToday;
     }
 
+    public Boolean getOnLaunch() {
+        return mOnLaunch;
+    }
+
+    public void setOnLaunch(Boolean onLaunch) {
+        mOnLaunch = onLaunch;
+    }
 }

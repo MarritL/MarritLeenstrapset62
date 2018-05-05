@@ -22,7 +22,7 @@ public class UserLab {
 
     // variables
     private static UserLab sUserLab;
-    private static ArrayList<User> mUserArrayList;
+    private ArrayList<User> mUserArrayList;
     private static DatabaseReference mDatabase;
     private static FirebaseUser mFirebaseUser;
     private static User mUser;
@@ -57,56 +57,17 @@ public class UserLab {
         return mUser;
     }*/
 
-    // find recipe with specified id
-    public User getUser(String id) {
-        for (User user : mUserArrayList) {
-            if (user.getUID().equals(id)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    // fill the ArrayList with the recipes from the database
+    // fill the ArrayList with the users from the database
     public void fillUserData() {
-        System.out.println(TAG + ": getUserData() called");
+        System.out.println(TAG + ": fillUserData() called");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (mFirebaseUser != null) {
-                    //String uid = mFirebaseUser.getUid();
-                    //mUser = dataSnapshot.child("users").child(uid).getValue(User.class);
+
                     for (DataSnapshot ds : dataSnapshot.child("users").getChildren()) {
-                        System.out.println(TAG + ds);
                         User user = ds.getValue(User.class);
-                        System.out.println(TAG + ": user is: " + user);
                         mUserArrayList.add(user);
-                    }
-
-                    // initate community values, all zero when data changed
-                    int mSumDays = 0;
-                    double mSumAnimals = 0;
-                    double mSumCO2 = 0;
-                    int mSumParticipantsToday = 0;
-                    int mSumParticipants = 0;
-
-                    // set the community values
-                    for (DataSnapshot ds : dataSnapshot.child("users").getChildren()) {
-
-                        // get values of all users in database
-                        int DaysCommunityUser = Integer.valueOf(ds.child("daysVegetarian").getValue().toString());
-                        double AnimalsCommunityUser = Double.valueOf(ds.child("animalsSaved").getValue().toString());
-                        double CO2CommunityUser = Double.valueOf(ds.child("co2Avoided").getValue().toString());
-                        boolean mClickedToday = Boolean.valueOf(ds.child("clickedToday").getValue().toString());
-
-                        // make sums
-                        mSumDays = mSumDays + DaysCommunityUser;
-                        mSumAnimals = mSumAnimals + AnimalsCommunityUser;
-                        mSumCO2 = mSumCO2 + CO2CommunityUser;
-                        mSumParticipants += 1;
-                        if (mClickedToday) {
-                            mSumParticipantsToday += 1;
-                        }
                     }
 
                     System.out.println(TAG + ": done with fillUserData()");
@@ -121,5 +82,19 @@ public class UserLab {
             }
         });
     }
+
+    // find user with specified id
+    public User getUser(String id) {
+        for (User user : mUserArrayList) {
+            if (user.getUID().equals(id)) {
+
+                System.out.println(TAG + ": getUser(uid) called");
+                return user;
+            }
+        }
+        return null;
+    }
+
+
 
 }
