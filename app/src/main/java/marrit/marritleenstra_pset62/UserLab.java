@@ -10,6 +10,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 /**
  * Created by Marrit on 15-1-2018.
  * The User lab contains all the methods to manipulate the data stash for User objects in
@@ -20,6 +22,7 @@ public class UserLab {
 
     // variables
     private static UserLab sUserLab;
+    private static ArrayList<User> mUserArrayList;
     private static DatabaseReference mDatabase;
     private static FirebaseUser mFirebaseUser;
     private static User mUser;
@@ -39,6 +42,7 @@ public class UserLab {
         System.out.println(TAG + ": made new UserLab()");
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mUserArrayList = new ArrayList<>();
     }
 
     // create a new User
@@ -48,9 +52,19 @@ public class UserLab {
         System.out.println(TAG + ": added new user to database");
     }
 
-    public User getUser(){
+    /*public User getUser(){
         System.out.print(TAG + ": getUser() called");
         return mUser;
+    }*/
+
+    // find recipe with specified id
+    public User getUser(String id) {
+        for (User user : mUserArrayList) {
+            if (user.getUID().equals(id)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     // fill the ArrayList with the recipes from the database
@@ -60,13 +74,14 @@ public class UserLab {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (mFirebaseUser != null) {
-                    String uid = mFirebaseUser.getUid();
-                    mUser = dataSnapshot.child("users").child(uid).getValue(User.class);
-
-                    /*if (savedInstanceState == null) {
-                        Log.d(TAG,"in onDataChange if savedInstancestate is null");
-                        MainActivity.navigation.setSelectedItemId(R.id.navigation_home);
-                    }*/
+                    //String uid = mFirebaseUser.getUid();
+                    //mUser = dataSnapshot.child("users").child(uid).getValue(User.class);
+                    for (DataSnapshot ds : dataSnapshot.child("users").getChildren()) {
+                        System.out.println(TAG + ds);
+                        User user = ds.getValue(User.class);
+                        System.out.println(TAG + ": user is: " + user);
+                        mUserArrayList.add(user);
+                    }
 
                     // initate community values, all zero when data changed
                     int mSumDays = 0;

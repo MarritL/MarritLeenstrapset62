@@ -60,8 +60,10 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // get user data
+        String userID = getArguments().getString("USERDATA");
+
         UserLab userLab = UserLab.getInstance();
-        mUser = userLab.getUser();
+        mUser = userLab.getUser(userID);
         System.out.println(TAG + ": user= " + mUser);
 
         // get recipe data

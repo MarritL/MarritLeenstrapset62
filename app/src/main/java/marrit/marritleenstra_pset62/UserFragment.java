@@ -37,9 +37,12 @@ public class UserFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // get User data
+        // get user data
+        String userID = getArguments().getString("USERDATA");
+
         UserLab userLab = UserLab.getInstance();
-        mUser = userLab.getUser();
+        mUser = userLab.getUser(userID);
+        System.out.println(TAG + ": user= " + mUser);
 
     }
 

@@ -34,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
                     // create new fragment
                     HomeFragment homeFragment = new HomeFragment();
 
+                    // add user id
+                    Bundle dataUser = new Bundle();
+                    dataUser.putString("USERDATA", firebaseUser.getUid());
+                    homeFragment.setArguments(dataUser);
+
                     // add the fragment to the 'fragment_container' framelayout
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.container_fragment, homeFragment);
@@ -45,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
                     // create new fragment
                     UserFragment userFragment = new UserFragment();
+
+                    // add user id
+                    Bundle userData = new Bundle();
+                    userData.putString("USERDATA", firebaseUser.getUid());
+                    userFragment.setArguments(userData);
 
                     // add the fragment to the 'fragment_container' framelayout
                     FragmentTransaction newTransaction = getSupportFragmentManager().beginTransaction();

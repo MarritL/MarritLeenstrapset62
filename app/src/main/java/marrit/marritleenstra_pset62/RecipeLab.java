@@ -32,7 +32,7 @@ public class RecipeLab {
         return sRecipeLab;
     }
 
-    // create a new recipes ArrayList
+    // create a new RecipeLab
     private RecipeLab() {
         System.out.println(TAG + ": made new RecipeLab()");
         mRecipeArrayList = new ArrayList<>();
@@ -43,7 +43,6 @@ public class RecipeLab {
 
     // get the recipes
     public ArrayList<Recipe> getRecipes(){
-        //fillRecipeArray();
         return mRecipeArrayList;
     }
 
@@ -56,13 +55,11 @@ public class RecipeLab {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (mFirebaseUser != null) {
                     String uid = mFirebaseUser.getUid();
-                    //User user = dataSnapshot.child("users").child(uid).getValue(User.class); //TODO: delete when yummly api works again
-                    String recipes = dataSnapshot.child("recipes").child(uid).getValue(String.class); //TODO: turn on when yummly api works again
+                    String recipes = dataSnapshot.child("recipes").child(uid).getValue(String.class);
 
                     // get recipes
-                    //String recipes = user.getRecipes();   //TODO: delete when yummly api works again
                     mRecipeArrayList = castToArray(recipes);
-                    System.out.println("RECIPELAB: done with fillRecipeArray()");
+                    System.out.println(TAG + ": done with fillRecipeArray()");
                 }
 
             }
@@ -70,7 +67,7 @@ public class RecipeLab {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
-                Log.w("RECIPELAB", "Failed to read value.", databaseError.toException());
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
 
             }
         });
