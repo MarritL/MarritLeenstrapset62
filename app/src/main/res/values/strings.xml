@@ -85,8 +85,22 @@
     <string name="Ingredients">Ingredients</string>
     <string name="view_directions">View directions</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Info String -->
+    <string name="info">A vegetarian diet has several possitive impacts. Yearly 540 kg CO2-equivalent
+        emission is avoided (Hallström, Carlsson-Kanyama and Börjesson, 2014). They daily value used
+        in this app is derived from this value: 540/365 = ca. 1.5 kg. As well animals are saved. How
+        many is based on the average Dutch meatconsumption pp per year / days = 76.8kg/365 = 0.2kg day
+        (CBS, 2016). Which animals you saved is based on the carcass weight of the animals. Carcass weight
+        is the slaughter weight / 2, since the meat composes more or less half of the animals slaughter
+        weight. The average slaughter weight comes from CBS (2016). The app calculates the animals saved
+        based on largest animals first. 1 chicken = 1kg meat = 5 days, 1 sheep = 10.5kg = 21 days,
+        1 pig = 47.5kg = 238 days, 1 calf = 78kg = 390 days, 1 horse = 114.5kg = 578 days,
+        1 cow = 155.5kg = 778 days. So lets say you ate 1000 days vegetarian, then you saved: 1 cow
+        (1000/778=1.2 thus 1000-778 = 222 days left), 10 sheep (222/21=10.5 thus 222-(10*21)= 12 days
+        left) and 2.4 chicken (12/5=2.4).
+        Sources: Hallström, E., Carlsson-Kanyama, A., and Börjesson, P. (2015). Environmental impact
+        of dietary change: a systematic review. Journal of Cleaner Production, 91, 1-11. and
+        https://opendata.cbs.nl/statline/#/CBS/nl/dataset/7123slac/table?ts=1525770095591.</string>
 
 
 </resources>

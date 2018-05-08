@@ -38,10 +38,10 @@
                     android:layout_centerHorizontal="true"/>
 
                 <ImageButton
-                    android:id="@+id/IB_settings"
+                    android:id="@+id/IB_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_settings_old"
+                    android:src="@drawable/ic_action_info"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="16dp"/>
