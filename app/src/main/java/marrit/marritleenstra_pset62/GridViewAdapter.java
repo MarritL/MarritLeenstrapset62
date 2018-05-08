@@ -59,13 +59,13 @@ public class GridViewAdapter extends ArrayAdapter {
         if (i != null) {
 
             // initiate the UI-components
-            ImageView IVimageView = (ImageView) v.findViewById(R.id.IV_grid_item);
-            TextView TVTitle = (TextView) v.findViewById(R.id.TV_grid_item_title);
-            TextView TVSource = (TextView) v.findViewById(R.id.TV_grid_item_source);
+            ImageView IVimageView = v.findViewById(R.id.IV_grid_item);
+            TextView TVTitle = v.findViewById(R.id.TV_grid_item_title);
+            TextView TVSource = v.findViewById(R.id.TV_grid_item_source);
 
             // set text components
             TVTitle.setText(i.getRecipeName());
-            TVSource.setText(i.getRating().toString());
+            TVSource.setText(i.getSourceName());
 
             // set image component with Picasso library
             String mImageURL = i.getImages().get(0);

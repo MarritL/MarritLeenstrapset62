@@ -18,6 +18,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -25,6 +27,7 @@ public class SignInActivity extends AppCompatActivity {
     public FirebaseAuth mAuth;
     public FirebaseAuth.AuthStateListener mAuthListener;
     public FirebaseAnalytics mFirebaseAnalytics;
+    private DatabaseReference mDatabase;
     FirebaseUser mUser;
 
     // UI references.
@@ -160,6 +163,11 @@ public class SignInActivity extends AppCompatActivity {
                                 // initialise data used in whole application
                                 if (mUser != null){
                                     System.out.println(TAG + ": firebaseUser != null");
+
+                                    // manage onLaunch data to restart with homeFragment
+                                    String mUid = mUser.getUid();
+                                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                                    mDatabase.child("users").child(mUid).child("onLaunch").setValue(true);
 
                                     // start RecipeLab
                                     RecipeLab recipeLab = RecipeLab.getInstance();

@@ -99,12 +99,12 @@ public class HomeFragment extends Fragment {
         mYummlyLogo = v.findViewById(R.id.IV_yummly_logo);
 
         // control visibility of vegetarian question and answers
-        if (mUser.getClickedToday() & (mUser.getRunStreak() == 0)) {
+        if (mUser.getClickedToday() & (mUser.getRunStreak() == 0)) {    // clicked NO
             mQuestion.setVisibility(View.INVISIBLE);
             mClickedYes.setVisibility(View.INVISIBLE);
             mYesButton.setVisibility(View.INVISIBLE);
             mNoButton.setVisibility(View.INVISIBLE);
-        } else if(mUser.getClickedToday()){
+        } else if(mUser.getClickedToday()){                             // clicked YES
             mQuestion.setVisibility(View.INVISIBLE);
             mClickedNo.setVisibility(View.INVISIBLE);
             mYesButton.setVisibility(View.INVISIBLE);
@@ -158,6 +158,14 @@ public class HomeFragment extends Fragment {
 
             // update database based on button clicked
             if (view == mYesButton) {
+
+                // hide question
+                mQuestion.setVisibility(View.INVISIBLE);
+                mYesButton.setVisibility(View.INVISIBLE);
+                mNoButton.setVisibility(View.INVISIBLE);
+                mClickedYes.setVisibility(View.VISIBLE);
+
+
                 mDatabase.child("users").child(mUID).child("clickedToday").setValue(true);
 
                 // update user's values
@@ -173,6 +181,13 @@ public class HomeFragment extends Fragment {
                 mDatabase.child("users").child(mUID).child("animalsSaved").setValue(animals);
             }
             else if (view == mNoButton) {
+
+                // hide question
+                mQuestion.setVisibility(View.INVISIBLE);
+                mYesButton.setVisibility(View.INVISIBLE);
+                mNoButton.setVisibility(View.INVISIBLE);
+                mClickedNo.setVisibility(View.VISIBLE);
+
                 mDatabase.child("users").child(mUID).child("clickedToday").setValue(true);
                 mDatabase.child("users").child(mUID).child("runStreak").setValue(0);
             }

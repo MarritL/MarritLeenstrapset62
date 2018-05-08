@@ -122,6 +122,9 @@ public class SettingsFragment extends Fragment {
                 Intent newIntent = new Intent(getActivity(), SignInActivity.class);
                 getActivity().startActivity(newIntent);
                 getActivity().finish();
+
+                // manage onLaunch data to restart with homeFragment
+                mDatabase.child("users").child(mUid).child("onLaunch").setValue(true);
             }
         }
     }
