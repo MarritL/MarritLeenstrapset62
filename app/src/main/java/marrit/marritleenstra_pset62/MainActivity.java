@@ -1,9 +1,14 @@
 package marrit.marritleenstra_pset62;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MAINACTIVITY";
@@ -26,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     // firebase references
     private FirebaseUser firebaseUser;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
 
     // variables
@@ -38,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
     User mUser;
     String mUid;
     public static BottomNavigationView navigation;
+
+    // variables for shared preferences
+    boolean mOnLaunchDone;
+    public static SharedPreferences settings;
+    public static final String PREFS_NAME = "MyPrefsFile";
+    public static final String FIRST_LAUNCH_DONE = "FirstLaunchDone";
 
     public BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -70,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     // add user id
                     Bundle userData = new Bundle();
                     userData.putSerializable("USERDATA", mUser);
+                    System.out.println(TAG + ": mUser in navigation_user = " + mUser);
                     userFragment.setArguments(userData);
 
                     // add the fragment to the 'fragment_container' framelayout
@@ -115,12 +129,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // restore shared preferences
+        settings = getSharedPreferences(PREFS_NAME, 0);
+        mOnLaunchDone = settings.getBoolean(FIRST_LAUNCH_DONE, false);
+        System.out.println(TAG + " mFirstlaunchDone3: " + mOnLaunchDone);
+
+        // set up fireBase
+        mAuth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
+        mUid = firebaseUser.getUid();
 
         // check if user is signed in.
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 firebaseUser = firebaseAuth.getCurrentUser();
@@ -140,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        // read from fireBase database
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -147,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
 
                 // get current user data
-                mUid = firebaseUser.getUid();
                 mUser = dataSnapshot.child("users").child(mUid).getValue(User.class);
 
                 // display displayName in the bottomNavigation
@@ -163,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                     if (mUser.getOnLaunch()){
                         Log.d(TAG,"in mUser.getOnLaunch()");
                         navigation.setSelectedItemId(R.id.navigation_home);
+                        mDatabase.child("users").child(mUid).child("onLaunch").setValue(false);
                     }
 
                     /*if (savedInstanceState == null) {
@@ -209,13 +231,73 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // manage navigation display
-        //mDatabase.child("users").child(mUid).child("onLaunch").setValue(false);
-        /*if (savedInstanceState == null) {
-                    Log.d(TAG,"in onDataChange if savedInstancestate is null");
-                    navigation.setSelectedItemId(R.id.navigation_home);
-        }*/
+        // run everything that has to be done on first time launch
+        System.out.println(TAG + " mFirstLaunchDone1 =" + mOnLaunchDone);
+        if (!mOnLaunchDone) {
+            setRecurringAlarm(MainActivity.this, 11, 15, AlarmReceiver.class);
+            setRecurringAlarm(this, 11, 20, MyNightJobs.class);
+
+            mOnLaunchDone = true;
+            System.out.println(TAG + " mFirstLauncheDone2 =" + mOnLaunchDone);
+        }
+
 
     }
+
+    // schedule daily alarms
+    private void setRecurringAlarm(Context context, int hour, int minute, Class receiver) {
+
+        // set the alarm at given time
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        System.out.println(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        Log.d("DEBUG", "alarm was set at" + calendar.getTimeInMillis());
+
+        // set action
+        Intent intent = new Intent(context, receiver);
+        PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // set repeating interval
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingAlarmIntent);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        System.out.println(TAG + ": onStop() called");
+
+        // save sharedPreferences
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(FIRST_LAUNCH_DONE, mOnLaunchDone);
+        editor.commit();
+
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+
+        System.out.println(TAG + ": onDestroy() called");
+
+        // manage onLaunch data to restart with homeFragment
+        // DIT WERKT NIET
+        //mDatabase.child("users").child(mUid).child("onLaunch").setValue(true);
+
+    }
+
 
 }
