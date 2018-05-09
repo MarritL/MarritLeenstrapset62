@@ -7,8 +7,12 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -34,7 +38,6 @@ public class UserFragment extends Fragment {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,17 +46,13 @@ public class UserFragment extends Fragment {
         //String userID = getArguments().getString("USERDATA");
         mUser = (User) getArguments().getSerializable("USERDATA");
 
-       /* UserLab userLab = UserLab.getInstance();
-        mUser = userLab.getUser(userID);
-        System.out.println(TAG + ": user= " + mUser);*/
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_user, container, false);
+        View view = inflater.inflate(R.layout.fragment_user, container, false);
 
         // initiate UI components
         mUserName = view.findViewById(R.id.TV_username);
@@ -77,7 +76,7 @@ public class UserFragment extends Fragment {
     }
 
     // on click listener
-    private class onInfoClickListener implements View.OnClickListener{
+    private class onInfoClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
@@ -92,7 +91,7 @@ public class UserFragment extends Fragment {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_info,null);
+        View dialogView = inflater.inflate(R.layout.dialog_info, null);
         dialogBuilder.setView(dialogView);
 
         // Let the user know what the dialog is for
@@ -110,6 +109,5 @@ public class UserFragment extends Fragment {
         AlertDialog InfoDialog = dialogBuilder.create();
         InfoDialog.show();
     }
-
 
 }

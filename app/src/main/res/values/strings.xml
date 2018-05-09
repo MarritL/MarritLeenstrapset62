@@ -51,8 +51,16 @@
     <string name="run_streak">Current Run streak</string>
     <string name="days">days</string>
     <string name="total_days">Total days eaten vegetarian</string>
-    <string name="total_CO2">Total CO2 emission avoided</string>
-    <string name="total_animals">Total animals saved</string>
+    <string name="total_CO2">Total CO2 emission avoided (kg)</string>
+    <string name="total_animals">Total animals saved (chicken)</string>
+    <string name="chicken">chickens</string>
+    <string name="sheep">sheep</string>
+    <string name="pigs">pigs</string>
+    <string name="calves">calves</string>
+    <string name="horses">horses</string>
+    <string name="cows">cows</string>
+    <string name="kg">kg</string>
+
 
     <!--Strings related to community fragment layout-->
     <string name="community">This is how the community is keeping up!</string>
@@ -90,13 +98,14 @@
         emission is avoided (Hallström, Carlsson-Kanyama and Börjesson, 2014). They daily value used
         in this app is derived from this value: 540/365 = ca. 1.5 kg. As well animals are saved. How
         many is based on the average Dutch meatconsumption pp per year / days = 76.8kg/365 = 0.2kg day
-        (CBS, 2016). Which animals you saved is based on the carcass weight of the animals. Carcass weight
-        is the slaughter weight / 2, since the meat composes more or less half of the animals slaughter
-        weight. The average slaughter weight comes from CBS (2016). The app calculates the animals saved
-        based on largest animals first. 1 chicken = 1kg meat = 5 days, 1 sheep = 10.5kg = 21 days,
-        1 pig = 47.5kg = 238 days, 1 calf = 78kg = 390 days, 1 horse = 114.5kg = 578 days,
-        1 cow = 155.5kg = 778 days. So lets say you ate 1000 days vegetarian, then you saved: 1 cow
-        (1000/778=1.2 thus 1000-778 = 222 days left), 10 sheep (222/21=10.5 thus 222-(10*21)= 12 days
+        (CBS, 2016). This app uses chicken as unit of measure, because 1 chicken \'gives\' 1 kg of meat.
+        (average slaughter weight / 2, since the meat composes ca. half of the animals slaughter
+        weight (CBS, 2016)). Therefor every kg of meat not eaten, saves one chicken. If you are
+        interested in how many other animals you saved (beyond the scope of this app):
+        1 chicken = 1kg meat = 5 days, 1 sheep = 10.5kg = 21 days, 1 pig = 47.5kg = 238 days,
+        1 calf = 78kg = 390 days, 1 horse = 114.5kg = 578 days, 1 cow = 155.5kg = 778 days.
+        So lets say you ate 1000 days vegetarian, then you saved: 1000/5 = 200 chicken OR
+        1 cow (1000/778=1.2 thus 1000-778 = 222 days left), 10 sheep (222/21=10.5 thus 222-(10*21)= 12 days
         left) and 2.4 chicken (12/5=2.4).
         Sources: Hallström, E., Carlsson-Kanyama, A., and Börjesson, P. (2015). Environmental impact
         of dietary change: a systematic review. Journal of Cleaner Production, 91, 1-11. and

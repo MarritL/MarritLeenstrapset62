@@ -134,10 +134,10 @@ https://ow.roocdn.com/assets/images/campaign-landing-pages/hero/vegetarian.jpg -
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/TV_total_animals"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="6dp"
                     android:layout_marginLeft="30dp"
                     android:textSize="30sp"
-                    android:text="1"/>
+                    android:text=""/>
 
                 <TextView
                     android:id="@+id/TV_total_CO2"
