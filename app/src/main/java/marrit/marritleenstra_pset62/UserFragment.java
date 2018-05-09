@@ -43,7 +43,6 @@ public class UserFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // get user data
-        //String userID = getArguments().getString("USERDATA");
         mUser = (User) getArguments().getSerializable("USERDATA");
 
     }

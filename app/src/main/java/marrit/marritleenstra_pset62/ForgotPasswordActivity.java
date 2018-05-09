@@ -65,7 +65,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!RegisterActivity.isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -95,8 +95,4 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         }
     }
 
-    // method to check if the email is valid
-    private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
 }

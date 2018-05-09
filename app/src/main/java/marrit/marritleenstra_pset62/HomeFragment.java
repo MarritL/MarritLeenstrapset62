@@ -61,17 +61,11 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // get user data
-        //String userID = getArguments().getString("USERDATA");
         mUser = (User) getArguments().getSerializable("USERDATA");
         mUid = mUser.getUID();
 
         // initiate firebase references
-        // initiate firebase references
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        /*UserLab userLab = UserLab.getInstance();
-        mUser = userLab.getUser(userID);
-        System.out.println(TAG + ": user= " + mUser);*/
 
         // get recipe data
         RecipeLab recipeLab = RecipeLab.getInstance();
@@ -207,6 +201,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    // handle click on one of the recipes
     private class MyRecipeClickedListener implements GridView.OnItemClickListener {
 
         @Override

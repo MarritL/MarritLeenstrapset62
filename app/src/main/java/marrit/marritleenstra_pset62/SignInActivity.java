@@ -33,8 +33,6 @@ public class SignInActivity extends AppCompatActivity {
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
     public TextView mGoToRegisterView;
     public Button mEmailSignInButton;
     public TextView mForgotPassword;
@@ -172,11 +170,6 @@ public class SignInActivity extends AppCompatActivity {
                                     // start RecipeLab
                                     RecipeLab recipeLab = RecipeLab.getInstance();
                                     recipeLab.fillRecipeArray();
-
-                                    // start UserLab
-                                    UserLab userLab = UserLab.getInstance();
-                                    userLab.fillUserData();
-                                    userLab.getUser(mUser.getUid());
 
                                     // start CommunityLab
                                     CommunityLab communityLab = CommunityLab.getInstance();

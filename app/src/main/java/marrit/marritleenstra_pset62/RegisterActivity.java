@@ -38,8 +38,7 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
 
     // variables
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    //private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase;
     private static final String TAG = "REGISTERACTIVITY";
 
     // UI references.
@@ -47,8 +46,6 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
     private EditText mDisplaynameView;
     private EditText mPasswordView;
     private EditText mPasswordRepeatView;
-    private View mProgressView;
-    private View mRegisterFormView;
     public Button mEmailRegisterButton;
 
     @Override
@@ -60,8 +57,6 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
         mEmailView = findViewById(R.id.email_register);
         mPasswordView = findViewById(R.id.password_register);
         mPasswordRepeatView = findViewById(R.id.password_repeat);
-        mRegisterFormView = findViewById(R.id.register_form);
-        mProgressView = findViewById(R.id.register_progress);
         mEmailRegisterButton = findViewById(R.id.email_register_button);
         mDisplaynameView = findViewById(R.id.displayname_register);
 
@@ -70,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
 
         // setup firebase
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     // register user onClick
@@ -180,7 +176,6 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
                                 Toast.makeText(RegisterActivity.this, R.string.auth_succes,
                                         Toast.LENGTH_SHORT).show();
 
-
                                 // first download of recipes
                                 RecipesHelper recipesHelper = new RecipesHelper(RegisterActivity.this);
                                 recipesHelper.getRecipes(RegisterActivity.this);
@@ -199,14 +194,9 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
                                     mUid = firebaseUser.getUid();
                                 }
 
-                                //mDatabase = FirebaseDatabase.getInstance().getReference();
-
                                 // add object to the database
-                                UserLab userLab = UserLab.getInstance();
-                                userLab.newUser(mUid, email, displayname);
-
-                                /*User user = new User(mUid, email, displayname);
-                                mDatabase.child("users").child(mUid).setValue(user);*/
+                                User user = new User(mUid, email, displayname);
+                                mDatabase.child("users").child(mUid).setValue(user);
 
                                 // go back to the signIn Activity
                                 Intent intent = new Intent(RegisterActivity.this, SignInActivity.class);
@@ -231,6 +221,5 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
     @Override
     public void gotError(String message) {
     }
-
 
 }

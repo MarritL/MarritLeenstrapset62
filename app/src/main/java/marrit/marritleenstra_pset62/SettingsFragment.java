@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,9 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -37,6 +44,8 @@ public class SettingsFragment extends Fragment {
     TextView mLogOut;
     TextView mUnsubscribe;
     EditText mDisplayName;
+    EditText mEmail;
+    EditText mPassword;
 
     // variables
     private static final String TAG = "SETTINGSFRAGMENT";
@@ -95,7 +104,7 @@ public class SettingsFragment extends Fragment {
         public void onClick(View view) {
 
             //go to right fragment or activity
-            if (view == mChangeEmail){
+            if (view == mChangeEmail) {
                 // create new fragment
                 ChangeEmailFragment emailFragment = new ChangeEmailFragment();
 
@@ -105,7 +114,7 @@ public class SettingsFragment extends Fragment {
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
-            if (view == mChangePassword){
+            if (view == mChangePassword) {
 
                 // create new fragment
                 ChangePasswordFragment passwordFragment = new ChangePasswordFragment();
@@ -117,7 +126,7 @@ public class SettingsFragment extends Fragment {
                 transaction.commit();
 
             }
-            if (view == mLogOut){
+            if (view == mLogOut) {
                 FirebaseAuth.getInstance().signOut();
                 Intent newIntent = new Intent(getActivity(), SignInActivity.class);
                 getActivity().startActivity(newIntent);
@@ -140,7 +149,7 @@ public class SettingsFragment extends Fragment {
     public class unsubscribeClicked implements View.OnClickListener {
 
         @Override
-        public void onClick(View view){
+        public void onClick(View view) {
             showAreYouSureDialog();
         }
     }
@@ -150,7 +159,7 @@ public class SettingsFragment extends Fragment {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = SettingsFragment.this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_unsubscribe,null);
+        View dialogView = inflater.inflate(R.layout.dialog_unsubscribe, null);
         dialogBuilder.setView(dialogView);
 
         // OK-button
@@ -182,7 +191,14 @@ public class SettingsFragment extends Fragment {
 
                                 }
                             }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                System.out.println(TAG + e);
+                            }
                         });
+
             }
 
         });
@@ -199,7 +215,7 @@ public class SettingsFragment extends Fragment {
     private void showDisplayNameDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = SettingsFragment.this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_display_name,null);
+        View dialogView = inflater.inflate(R.layout.dialog_display_name, null);
         dialogBuilder.setView(dialogView);
 
         mDisplayName = dialogView.findViewById(R.id.ET_displayname);

@@ -8,6 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/top_margin"
         android:layout_margin="@dimen/all_margin"
         android:text="@string/dialog_unsubscribe"/>
 

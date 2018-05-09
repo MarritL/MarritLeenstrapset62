@@ -9,7 +9,7 @@ public class SplashActivity extends AppCompatActivity {
 
     // variables
     private static final String TAG = "SPLASHACTIVITY";
-    private static final int DURATION = 3000;
+    private static final int DURATION = 1500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

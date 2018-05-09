@@ -177,20 +177,12 @@ public class MainActivity extends AppCompatActivity {
                     String mDisplayname = mUser.getDisplayName();
                     navigation.getMenu().findItem(R.id.navigation_user).setTitle(mDisplayname);
 
-
-                    //TODO: after turning the screen errors (if already been in other tab)
                     // on launch the hometab is opened (initiated here, because needs the user data)
-
                     if (mUser.getOnLaunch()){
                         Log.d(TAG,"in mUser.getOnLaunch()");
                         navigation.setSelectedItemId(R.id.navigation_home);
                         mDatabase.child("users").child(mUid).child("onLaunch").setValue(false);
                     }
-
-                    /*if (savedInstanceState == null) {
-                        Log.d(TAG,"in onDataChange if savedInstancestate is null");
-                        navigation.setSelectedItemId(R.id.navigation_home);
-                    }*/
                 }
 
                 // when data changed set all the community values to 0
@@ -220,8 +212,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-
-                //Log.d(TAG, "mOnStartedisTrue");
             }
 
             @Override
@@ -234,8 +224,8 @@ public class MainActivity extends AppCompatActivity {
         // run everything that has to be done on first time launch
         System.out.println(TAG + " mFirstLaunchDone1 =" + mOnLaunchDone);
         if (!mOnLaunchDone) {
-            setRecurringAlarm(MainActivity.this, 12, 22, AlarmReceiver.class);
-            setRecurringAlarm(this, 10, 22, MyNightJobs.class);
+            setRecurringAlarm(MainActivity.this, 19, 00, AlarmReceiver.class);
+            setRecurringAlarm(this, 3, 10, MyNightJobs.class);
 
             mOnLaunchDone = true;
             System.out.println(TAG + " mFirstLauncheDone2 =" + mOnLaunchDone);
@@ -271,6 +261,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+
+        // log out and go back to the sign in page
+        FirebaseAuth.getInstance().signOut();
+
+        Intent newIntent = new Intent(MainActivity.this, SignInActivity.class);
+        MainActivity.this.startActivity(newIntent);
+        MainActivity.this.finish();
+    }
+
+    @Override
     public void onStop(){
         super.onStop();
         System.out.println(TAG + ": onStop() called");
@@ -292,9 +294,6 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(TAG + ": onDestroy() called");
 
-        // manage onLaunch data to restart with homeFragment
-        // DIT WERKT NIET
-        //mDatabase.child("users").child(mUid).child("onLaunch").setValue(true);
 
     }
 

@@ -14,8 +14,16 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main">
+            android:label="Vegetariano!">
         </activity>
+        <receiver
+            android:name=".MyNightJobs"
+            android:exported="true">
+        </receiver>
+        <receiver
+            android:name=".AlarmReceiver"
+            android:exported="true">
+        </receiver>
         <activity
             android:name=".RegisterActivity"
             android:parentActivityName=".SignInActivity">
@@ -32,9 +40,6 @@
         <activity
             android:name=".ForgotPasswordActivity"
             android:parentActivityName=".SignInActivity">
-        </activity>
-        <activity android:name=".ChangeEmailActivity"
-                  android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name=".SplashActivity"
                   android:theme="@style/SplashTheme">
