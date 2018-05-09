@@ -234,8 +234,8 @@ public class MainActivity extends AppCompatActivity {
         // run everything that has to be done on first time launch
         System.out.println(TAG + " mFirstLaunchDone1 =" + mOnLaunchDone);
         if (!mOnLaunchDone) {
-            setRecurringAlarm(MainActivity.this, 11, 15, AlarmReceiver.class);
-            setRecurringAlarm(this, 11, 20, MyNightJobs.class);
+            setRecurringAlarm(MainActivity.this, 12, 22, AlarmReceiver.class);
+            setRecurringAlarm(this, 10, 22, MyNightJobs.class);
 
             mOnLaunchDone = true;
             System.out.println(TAG + " mFirstLauncheDone2 =" + mOnLaunchDone);
@@ -250,7 +250,6 @@ public class MainActivity extends AppCompatActivity {
         // set the alarm at given time
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        System.out.println(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         Log.d("DEBUG", "alarm was set at" + calendar.getTimeInMillis());

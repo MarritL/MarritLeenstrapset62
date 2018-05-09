@@ -95,7 +95,7 @@ public class UserFragment extends Fragment {
         dialogBuilder.setView(dialogView);
 
         // Let the user know what the dialog is for
-        dialogBuilder.setMessage("Info about calculations used");
+        dialogBuilder.setMessage("About the calculations");
 
         // OK-button
         dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
