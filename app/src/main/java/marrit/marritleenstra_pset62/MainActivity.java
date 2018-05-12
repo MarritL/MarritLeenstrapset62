@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(TAG + " mFirstLaunchDone1 =" + mOnLaunchDone);
         if (!mOnLaunchDone) {
             setRecurringAlarm(MainActivity.this, 19, 00, AlarmReceiver.class);
-            setRecurringAlarm(this, 3, 10, MyNightJobs.class);
+            setRecurringAlarm(this, 03, 10, MyNightJobs.class);
 
             mOnLaunchDone = true;
             System.out.println(TAG + " mFirstLauncheDone2 =" + mOnLaunchDone);
@@ -246,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
 
         // set action
         Intent intent = new Intent(context, receiver);
+        intent.putExtra("USERUID", mUid);
         PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // set repeating interval

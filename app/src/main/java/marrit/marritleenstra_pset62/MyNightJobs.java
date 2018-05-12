@@ -19,13 +19,15 @@ public class MyNightJobs extends BroadcastReceiver implements RecipesHelper.Call
 
     // variables
     private static final String TAG = "MYNIGHTJOBS";
+    private String mUid;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         System.out.println(TAG + " alarm received");
+        mUid = intent.getStringExtra("USERUID");
 
-        updateRunstreak();
+        updateRunstreak(mUid);
 
         // request new recipes from yummly api
         RecipesHelper recipesHelper = new RecipesHelper(context);
@@ -52,30 +54,26 @@ public class MyNightJobs extends BroadcastReceiver implements RecipesHelper.Call
 
     // functionality to check if user clicked or not in that particular day, if not, consider as
     // a "NO" and set runstreak to 0.
-    private void updateRunstreak() {
+    private void updateRunstreak(String Uid) {
 
         final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        final String mUID = Uid;
 
         // get user data from database
         ValueEventListener listener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                // get current user data
-                FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+                User user = dataSnapshot.child("users").child(mUID).getValue(User.class);
 
-                if (mUser != null) {
-                    String uid = mUser.getUid();
-                    User user = dataSnapshot.child("users").child(mUser.getUid()).getValue(User.class);
-
-                    // if user didn't say whether he ate vegetarian or not, consider as a NO
-                    if (!user.getClickedToday()) {
-                        mDatabase.child("users").child(uid).child("runStreak").setValue(0);
-                    }
-
-                    // set clickedToday to false again
-                    mDatabase.child("users").child(uid).child("clickedToday").setValue(false);
+                // if user didn't say whether he ate vegetarian or not, consider as a NO
+                if (!user.getClickedToday()) {
+                    mDatabase.child("users").child(mUID).child("runStreak").setValue(0);
                 }
+
+                // set clickedToday to false again
+                mDatabase.child("users").child(mUID).child("clickedToday").setValue(false);
+
             }
 
             @Override

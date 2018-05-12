@@ -28,6 +28,7 @@ public class SignInActivity extends AppCompatActivity {
     public FirebaseAuth.AuthStateListener mAuthListener;
     public FirebaseAnalytics mFirebaseAnalytics;
     private DatabaseReference mDatabase;
+    private FirebaseUser mFirebaseUser;
     FirebaseUser mUser;
 
     // UI references.
@@ -43,6 +44,25 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        // check if user is signed in
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                mFirebaseUser = firebaseAuth.getCurrentUser();
+                if (mFirebaseUser != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + mFirebaseUser.getUid());
+                    // go to MainActiviy
+                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                    SignInActivity.this.startActivity(intent);
+                    SignInActivity.this.finish();
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+            }
+        };
 
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
