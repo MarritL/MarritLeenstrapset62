@@ -2,6 +2,9 @@
 Final Project Minor Programmeren
 Marrit Leenstra
 
+# 28-11-2017 until 18-3-2018
+* Started working on this application as the last app for the course Native App Studio. However, the application was getting to large for that course. So we decided to use this app for the final project and make another App for Native App Studio. Therefor the Processbook is not complete. Work done so far: basically the app is working with Firebase and registering users that want to become vegetarians. It keeps track of the total amount of days and runstreak of the user as well as how many animals he saved and CO2 emmission he avoided. Furthermore it keeps track of the community as a whole. All in firebase database.
+
 # 19-3-2018
 * Worked on unsubscribe
   * Problem: app crashes when trying to delete from database
@@ -124,6 +127,9 @@ Marrit Leenstra
    * Problem: This solution did not work wel, because the fireBase value event listener didn't register datachanges anymore.
      * Solution: i decided that onDataChange was better in the MainActivity, because then you see the changes right away. Therefor that the singleton for users was not a good idee. However, then i am back at the problem of stateloss.
      * Solution: I give the Userclass an extra variable namly onLaunch, that is true when the hometab has to be selected and false if that is already done. In this way I avoid using the saveInstanceState bundle in the onDataChange listener from Firebase.
+     
+# 8-5-2018
+* Added an information button to explain the user how the caluculations are made. 
 
 # 12-5-2-18
 * Testing app: practically finished
