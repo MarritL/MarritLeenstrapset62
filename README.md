@@ -7,9 +7,6 @@ Vegetariano! is a mobile application designed for new vegetarians. It can be dif
 ## Screenshots
 <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Home.jpg' width="200" height="400"> <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/User.jpg' width="200" height="400"> <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Community.jpg' width="200" height="400"> <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Recipe.jpg' width="200" height="400">
 
-## Better Code Hub
-<img src='https://bettercodehub.com/edge/badge/MarritL/Trivia2?branch=master'>
-
 ## Author
 * Marrit Leenstra
 
@@ -27,3 +24,6 @@ This app makes uses of the following apis and libraries:
 Furthermore, Stackoverflow was of great help in overcoming small and larger problems on the way. 
 
 Note: all libraries and apis used in this project have their own licences. Please make sure to be familier with them if using this code as example for other projects.
+
+## Better Code Hub
+<img src='https://bettercodehub.com/edge/badge/MarritL/MarritLeenstrapset62?branch=master'>
