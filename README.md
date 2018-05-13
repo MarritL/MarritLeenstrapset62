@@ -8,7 +8,7 @@ Vegetariano! is a mobile application designed for new vegetarians. It can be dif
 <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Home.jpg' width="200" height="400"> <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/User.jpg' width="200" height="400"> <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Community.jpg' width="200" height="400"> <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Recipe.jpg' width="200" height="400">
 
 ## Author
-* Marrit Leenstra
+Marrit Leenstra
 
 ## Copyright
 The Vegetariano! app is licenced under Apache License 2.0
