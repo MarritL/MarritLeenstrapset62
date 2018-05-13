@@ -14,6 +14,7 @@ Vegetariano! is a mobile application designed for new vegetarians. It can be dif
 * Marrit Leenstra
 
 ## Copyright
+The Vegetariano! app is licenced under Apache License 2.0
 
 ## Acknowledgments
 This app makes uses of the following apis and libraries:
