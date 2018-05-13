@@ -107,6 +107,13 @@ Marrit Leenstra
   * Problem: unsubscribe doesn't work anymore.
   * Reason: i added an extra eventlistener to the code (to get the recipes from the database), when i try to delete the userdata from the database. This listener protests (because his data is gone too).
      * Solution: Seperate the recipes from the user in the database, so that the listeners are not listening to the same data.
+     
+# 2-5-2018
+* Worked on a major bug in my app, broke everything, copied everything to new project.
+  * Problem: I use onSafeIntanceState() inside the Firebase onDataChange listener, to select the right tab only on first launching the app. However, sometimes after turning the phone, a fatal error occured: illigalStateException: cannot perform this action after onSafeInstanceSate.
+  * Problem: I am trying different things to fix this problem: for example save a value in SharedPreferences so that on launch I can check if it is the first launch or not. However, this wasn't working and also other things started to not work anymore (when navigating to User-tab, the app didn't respond anymore without any errors). Therefor I tried to set it back to the previous version with version control. However, then the app didn't recognize the standard build in functions like 'findViewById()' or 'setContentView()'.
+     * Solution: I copied all the files one by one to a new project and repository (from MarritLeenstra-pset6-1 to MarritLeenstrapset62). Now everything works again and I am back at the first major bug in my app (illigalStateException). 
+
 
 # 4-5-2018
 * Fixed a major bug in my app
