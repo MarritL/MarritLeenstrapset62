@@ -21,7 +21,10 @@ This app makes uses of the following apis and libraries:
 * Gson library to cast Strings to JSON and visaversa
 * Volley library to request data from Yummly
 
-Furthermore, Stackoverflow was of great help in overcoming small and larger problems on the way. 
+Furthermore several websites were consulted during the process.
+* Stackoverflow was as always of great help in overcoming small and larger problems on the way. 
+* One short unit of code was borrowed from http://android.okhelp.cz/open-url-with-browser-if-button-clicked-android-example/ 
+Thanks for that.
 
 Note: all libraries and apis used in this project have their own licences. Please make sure to be familier with them if using this code as example for other projects.
 
