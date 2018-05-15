@@ -26,7 +26,6 @@ public class SignInActivity extends AppCompatActivity {
     public FirebaseAuth mAuth;
     public FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
-    private FirebaseUser mFirebaseUser;
     FirebaseUser mUser;
 
     // UI references.
@@ -134,7 +133,6 @@ public class SignInActivity extends AppCompatActivity {
             // there was an error; don't attempt login and focus the first
             // form field with an error
             focusView.requestFocus();
-            return;
         } else {
             // try to sign in the user
             mAuth.signInWithEmailAndPassword(email, password)
@@ -151,7 +149,7 @@ public class SignInActivity extends AppCompatActivity {
                                 Log.w(TAG, "signInWithEmail:failed", task.getException());
 
                             } else {
-                                // sign in was succesfull
+                                // sign in was succesful
                                 prepareData();
                             }
                         }
@@ -159,11 +157,11 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
+    // initialise data needed through the whole application
     public void prepareData(){
         Toast.makeText(SignInActivity.this, R.string.loading_data,
                 Toast.LENGTH_SHORT).show();
 
-        // initialise data used in whole application
         if (mUser != null){
 
             // manage onLaunch data to restart with homeFragment

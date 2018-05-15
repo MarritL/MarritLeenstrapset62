@@ -47,13 +47,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            sendEmailResetPassword();
+            attemptSendEmail();
             mEmailView.getText().clear();
         }
     }
 
-    // the actual method to send the reset password email
-    public void sendEmailResetPassword() {
+    // check if the form is valid
+    public void attemptSendEmail() {
 
         String email = mEmailView.getText().toString();
 
@@ -75,24 +75,29 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-            return;
         } else {
-            mAuth.sendPasswordResetEmail(email)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "Email sent.");
-                                Toast.makeText(ForgotPasswordActivity.this, R.string.send_email,
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-            // go back to sign in activity
-            Intent intent = new Intent(ForgotPasswordActivity.this, SignInActivity.class);
-            ForgotPasswordActivity.this.startActivity(intent);
+            // proceed to send password reset email
+            sendEmail(email);
         }
+    }
+
+    // send the actual password reset email
+    private void sendEmail(String email) {
+        mAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Email sent.");
+                            Toast.makeText(ForgotPasswordActivity.this, R.string.send_email,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        // go back to sign in activity
+        Intent intent = new Intent(ForgotPasswordActivity.this, SignInActivity.class);
+        ForgotPasswordActivity.this.startActivity(intent);
     }
 
 }
