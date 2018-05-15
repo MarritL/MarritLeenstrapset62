@@ -25,6 +25,7 @@
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_incorrect_password_or_email">The password or email is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_repeat">The passwords are not the same</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
@@ -42,7 +43,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_signin">SignInActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_user">Username</string>
     <string name="title_community">Community</string>
@@ -54,11 +54,6 @@
     <string name="total_CO2">Total CO2 emission avoided (kg)</string>
     <string name="total_animals">Total animals saved (chicken)</string>
     <string name="chicken">chickens</string>
-    <string name="sheep">sheep</string>
-    <string name="pigs">pigs</string>
-    <string name="calves">calves</string>
-    <string name="horses">horses</string>
-    <string name="cows">cows</string>
     <string name="kg">kg</string>
 
 
@@ -75,8 +70,9 @@
 
     <!--Strings related to settings-->
     <string name="change_email">Change email address</string>
-    <string name="change_displayname">New Display Name</string>
-    <string name="change_password">Password</string>
+    <string name="change_displayname">Change Display Name</string>
+    <string name="new_displayname">New Display Name</string>
+    <string name="change_password">Change Password</string>
     <string name="unsubscribe">Unsubscribe</string>
     <string name="change">Change</string>
     <string name="new_email">New email address</string>

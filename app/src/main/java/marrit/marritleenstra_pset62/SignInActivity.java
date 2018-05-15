@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +25,6 @@ public class SignInActivity extends AppCompatActivity {
     // fireBase references
     public FirebaseAuth mAuth;
     public FirebaseAuth.AuthStateListener mAuthListener;
-    public FirebaseAnalytics mFirebaseAnalytics;
     private DatabaseReference mDatabase;
     private FirebaseUser mFirebaseUser;
     FirebaseUser mUser;
@@ -44,25 +42,6 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
-        // check if user is signed in
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                mFirebaseUser = firebaseAuth.getCurrentUser();
-                if (mFirebaseUser != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + mFirebaseUser.getUid());
-                    // go to MainActiviy
-                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                    SignInActivity.this.startActivity(intent);
-                    SignInActivity.this.finish();
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
 
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
@@ -84,7 +63,6 @@ public class SignInActivity extends AppCompatActivity {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
 
@@ -156,7 +134,6 @@ public class SignInActivity extends AppCompatActivity {
             // there was an error; don't attempt login and focus the first
             // form field with an error
             focusView.requestFocus();
-            System.out.println("before return");
             return;
         } else {
             // try to sign in the user
@@ -167,45 +144,45 @@ public class SignInActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
                             // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
+                            // the auth state listener will be notified
                             if (!task.isSuccessful()) {
-                                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                                mPasswordView.setError(getString(R.string.error_incorrect_password_or_email));
                                 mPasswordView.requestFocus();
                                 Log.w(TAG, "signInWithEmail:failed", task.getException());
 
                             } else {
-                                Toast.makeText(SignInActivity.this, R.string.loading_data,
-                                        Toast.LENGTH_SHORT).show();
-
-                                // initialise data used in whole application
-                                if (mUser != null){
-                                    System.out.println(TAG + ": firebaseUser != null");
-
-                                    // manage onLaunch data to restart with homeFragment
-                                    String mUid = mUser.getUid();
-                                    mDatabase = FirebaseDatabase.getInstance().getReference();
-                                    mDatabase.child("users").child(mUid).child("onLaunch").setValue(true);
-
-                                    // start RecipeLab
-                                    RecipeLab recipeLab = RecipeLab.getInstance();
-                                    recipeLab.fillRecipeArray();
-
-                                    // start CommunityLab
-                                    CommunityLab communityLab = CommunityLab.getInstance();
-                                    communityLab.fillCommunityData();
-                                }
-
-                                // go to mainActivity
-                                Intent intent = new Intent(SignInActivity.this, SplashActivity.class);
-                                SignInActivity.this.startActivity(intent);
+                                // sign in was succesfull
+                                prepareData();
                             }
-
-                            // ...
                         }
                     });
-
         }
+    }
+
+    public void prepareData(){
+        Toast.makeText(SignInActivity.this, R.string.loading_data,
+                Toast.LENGTH_SHORT).show();
+
+        // initialise data used in whole application
+        if (mUser != null){
+
+            // manage onLaunch data to restart with homeFragment
+            String mUid = mUser.getUid();
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase.child("users").child(mUid).child("onLaunch").setValue(true);
+
+            // start RecipeLab
+            RecipeLab recipeLab = RecipeLab.getInstance();
+            recipeLab.fillRecipeArray();
+
+            // start CommunityLab
+            CommunityLab communityLab = CommunityLab.getInstance();
+            communityLab.fillCommunityData();
+        }
+
+        // go to mainActivity
+        Intent intent = new Intent(SignInActivity.this, SplashActivity.class);
+        SignInActivity.this.startActivity(intent);
     }
 
     // disable going back

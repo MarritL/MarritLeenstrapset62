@@ -123,29 +123,6 @@ public class ChangeEmailFragment extends Fragment {
                                     // return to settings
                                     MainActivity.navigation.setSelectedItemId(R.id.navigation_settings);
                                 }
-                                //TODO check if re-authentication is needed
-                                /*else if(!task.isSuccessful()) {
-                                    try {
-                                        throw task.getException()
-                                    } catch(FirebaseAuthRecentLoginRequiredException e) {
-                                        // Get auth credentials from the user for re-authentication. The example below shows
-                                        // email and password credentials but there are multiple possible providers,
-                                        // such as GoogleAuthProvider or FacebookAuthProvider.
-                                        AuthCredential credential = EmailAuthProvider
-                                                .getCredential(email, "password1234");
-
-/                                       // Prompt the user to re-provide their sign-in credentials
-                                        user.reauthenticate(credential)
-                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        Log.d(TAG, "User re-authenticated.");
-                                                    }
-                                                });
-                                    }
-                                }*/
-
-
                             }
                         });
             }

@@ -39,11 +39,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // set up listeners
-        mSendEmailButton.setOnClickListener(new SendEmailOnClick());
+        mSendEmailButton.setOnClickListener(new sendEmailOnClick());
     }
 
     // register button click
-    public class SendEmailOnClick implements View.OnClickListener {
+    public class sendEmailOnClick implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {

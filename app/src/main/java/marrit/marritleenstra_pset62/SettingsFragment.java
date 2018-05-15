@@ -84,10 +84,10 @@ public class SettingsFragment extends Fragment {
         mUnsubscribe = view.findViewById(R.id.unsubscribe);
 
         //set listeners on UI references
-        mChangeEmail.setOnClickListener(new goToNextActivity());
-        mChangePassword.setOnClickListener(new goToNextActivity());
+        mChangeEmail.setOnClickListener(new goToNextFragment());
+        mChangePassword.setOnClickListener(new goToNextFragment());
         mChangeDisplayname.setOnClickListener(new changeDisplayName());
-        mLogOut.setOnClickListener(new goToNextActivity());
+        mLogOut.setOnClickListener(new goToNextFragment());
         mUnsubscribe.setOnClickListener(new unsubscribeClicked());
 
         // initiate firebase references
@@ -98,7 +98,7 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
-    public class goToNextActivity implements View.OnClickListener {
+    public class goToNextFragment implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
