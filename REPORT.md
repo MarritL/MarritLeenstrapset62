@@ -16,7 +16,7 @@ The app supports four main functionalities:
 
 All four functionalities will now be described seperately, together with the related code.
 
-### Manage user account
+### 1. Manage user account
 To be able to save userdata (e.g. how many days he followed the vegetarian diet), every user needs to have an account on the Vegetariano! app. Managing of the user account is done using FireBase Authentication. Supported actions are: registration, sign in, forgot password, change email adress, change display name, change password, log out and unsubscribe. Screenshots of these actions can be found below.
 
 <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Signin.jpg' width="200" height="400"> <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Register.jpg' width="200" height="400"> <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Reset.jpg' width="200" height="400"> <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Settings.jpg' width="200" height="400">
@@ -45,5 +45,29 @@ The ChangeEmailFragment is displayed in the MainActivity container, but only acc
 
 #### ChangePasswordFragment
 The ChangePasswordFragment works the same as the ChangeEmailFragment. It is displayed in the MainActivity container and accessed via the SettingsFragment. The user can fill in his new password and repeat that. When the change-button is clicked, the attemptChangePassword() function will be called to validate the password. If the password is valid (checked by the fuctions: isPasswordValid() and isPasswordSame() in RegisterActivity), the changePassword() function will be called. This will change the password in FireBase Authentication by the FireBase updatePassword() method. A securityemail will again be send to the user's emailadress. By following the instruction in the email, he can submit this action. When the user is done, he will be taken back to the SettingsFragment.
+
+### 2. Keep track whether user ate vegetarian at given day
+One of the most important functionalities of the Vegetariano! app is keeping track of the vegetarian days of the users. The user is self responsible for the counting, in the sense that he has to say whether he did or did not eat vegetarian every day. This is then saved in the database. Since it is so important that he user does this every day, a reminder in the form of a notification is send to the user daily. If however, he did not anwere this question before 3 o'clock at night, this will be registered as a NO. 
+
+The following diagram describes the architecture of the 'keep track whether user ate vegetarian at given day' functionality:
+
+<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Pictures/KeepTrack.JPG' width="700" height="350">
+
+#### HomeFragment
+The homeFragment is very important for the 'keep track whether user ate vegetarian at given day' functionality, since it is the screen where the user can actually let the app know whether he ate vegetarian or not. First the User object is sent from the MainActivity to the HomeFragment. At the top of the screen the 'did you eat vegetarian' question is displayed with two buttons, respectively 'YES' and 'NO'. At least... when the user did not answer that question yet. This is checked with the clickedToday-getter from the User class. 
+When the user clicks one of the two buttons, the todayVegetarianClickListener will be triggered. In the todayVegetarianClickListener YES and NO answers are separated. If the userer cicked YES (i.e. he ate vegetarian that day) the values for 'clickedToday', 'daysVegetarian', 'runStreak', co2Avoided' and 'animalsSaved' will be updated in the database. clickedToday wil be set to true, daysVegetarian and runStreak will be plussed with 1, co2Avoided with 1.5 and animalsSaved with 0.2. The daily gain for co2Avoided and animalsSaved are explained in the infoscreen in the userFragment. If the user however, clicked NO (i.e. he did not eat vegetarian) only the 'clickedToday' and 'runStreak' will be updated. ClickedToday is set to 'true' and the runStreak will be set to 0. Furthermore, the question and buttons will be hided after a buttonclick and a message stating that the user did or did not eat vegetarian will be displayed.
+
+#### MainActivity
+The first time the MainActivity is launched the setRecurringAlarm() function for two daily alarms will be called. The first alarm is triggered daily around (i.e. inexact repeating) 19.00 o'clock and received by the AlarmReceiver class. The second alarm is triggerd daily arount 3.10 at night and received by the MyNightJobs class. Once the recurrin alarms are set, a boolean 'mOnLaunchDone' is set to 'true'. This value is saved in the sharedPreferences. Every time onCreate is called, the sharedPreferences are restored and therefor the setRecurringAlarm() function will not be called again. The sharedPreferences are chosen to save the mOnLaunchDone value, because when a hypothetical rebooth would turn off the alarms, the sharedPreferences would be deleted as well. Therefor, the setRecurringAlarm() function will be triggered again after a rebooth and the alarms will be set again. The other functions of MainActivity are not important for the 'keep track whether user ate vegetarian at given day' functionality and will be therefor discussed in other paragraphs.
+
+#### AlarmReceiver
+The AlarmReceiver receives an alarm daily at 19.00 o'clock. In the AlarmReceiver class a notification is build. This notification is a reminder for the user that he has to answer the 'did you eat vegetarian' question in the Vegetariano! app. Uppon clicking the notification, the SignInActivity is opened. After signing in, the MainActivity is opened with the HomeFragment in which the question is displayed. 19.00 o'clock has been chosen as triggertime, because it is assumed that the user by then knows whether he ate vegetarian that day or not. 
+
+#### MyNightJobs
+The second alarm is triggered daily around 3.10 at night and received by the MyNightJobs class. The MyNightJobs class has two functions: checking if the user answered the question and download new recipes from the server. The second function will be discussed in the paragraph about the 4th functionality 'Supply user with daily recipes'. When the alarm is received by the MyNightJobs class the updateRunstreak() function will be triggered. In this function a FireBase singleValueEventListener is triggered to read the userdata from the database and save it in the User object. One value is in particular important for the 'keep track whether user ate vegetarian at given day' functionality, namely the 'clickedToday' value. Logically, if a user answered the question (i.e. clicked YES or NO) the user.getClickedToday function (getter from the User class) will return true, if not it will return false. If the user did not answer the question, his runstreak will be set to 0 in the database and other values do not change, since it is considered as a NO answer. If he indeed did answer the question, the user values are already handeled in the database when he clicked YES or NO. The clickedToday value will be set to false again in the database, so that the user can answer the question again on the day to come. 
+
+
+
+
 
 
