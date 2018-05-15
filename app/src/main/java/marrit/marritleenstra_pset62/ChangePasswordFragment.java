@@ -1,6 +1,5 @@
 package marrit.marritleenstra_pset62;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -62,51 +61,67 @@ public class ChangePasswordFragment extends Fragment {
         return view;
     }
 
+
+    // onClick listener
     private class changePasswordOnClick implements View.OnClickListener{
 
         @Override
         public void onClick(View v) {
-
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-            String newPassword = mNewPassword.getText().toString();
-            String newRepeat = mRepeatPassword.getText().toString();
-
-            View focusView = null;
-
-
-            // check if passwords are given and the same
-            if (TextUtils.isEmpty(newPassword)) {
-                mNewPassword.setError(getString(R.string.error_field_required));
-                focusView = mNewPassword;
-                focusView.requestFocus();
-            } else if(!RegisterActivity.isPasswordValid(newPassword)) {
-                mNewPassword.setError(getString(R.string.error_incorrect_password));
-                focusView = mNewPassword;
-                focusView.requestFocus();
-            } else if (TextUtils.isEmpty(newRepeat) || !RegisterActivity.isPasswordSame(newPassword, newRepeat)){
-                mRepeatPassword.setError(getString(R.string.error_invalid_repeat));
-                focusView = mRepeatPassword;
-                focusView.requestFocus();
-            } else {
-                // block of code from firebase guide on user management
-                user.updatePassword(newPassword)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, ": User password updated.");
-
-                                    // let the user know that he has to login with the new email adress
-                                    Toast.makeText(getContext(), R.string.use_new_password,Toast.LENGTH_SHORT).show();
-
-                                    // return to settings
-                                    MainActivity.navigation.setSelectedItemId(R.id.navigation_settings);
-                                }
-                            }
-                        });
-            }
-
+            attemptChangePassword();
         }
+    }
+
+
+    // check if all fields in the form are valid
+    private void attemptChangePassword(){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        String newPassword = mNewPassword.getText().toString();
+        String newRepeat = mRepeatPassword.getText().toString();
+
+        View focusView;
+
+
+        // check if passwords are given and the same
+        if (TextUtils.isEmpty(newPassword)) {
+            mNewPassword.setError(getString(R.string.error_field_required));
+            focusView = mNewPassword;
+            focusView.requestFocus();
+        } else if(!RegisterActivity.isPasswordValid(newPassword)) {
+            mNewPassword.setError(getString(R.string.error_incorrect_password));
+            focusView = mNewPassword;
+            focusView.requestFocus();
+        } else if (TextUtils.isEmpty(newRepeat) || !RegisterActivity.isPasswordSame(newPassword, newRepeat)){
+            mRepeatPassword.setError(getString(R.string.error_invalid_repeat));
+            focusView = mRepeatPassword;
+            focusView.requestFocus();
+        } else {
+            // form is valid: change password
+            changePassword(user, newPassword);
+        }
+
+    }
+
+
+    // change password in FireBase authentication
+    private void changePassword(FirebaseUser user, String newPassword){
+
+        // block of code from firebase guide on user management
+        user.updatePassword(newPassword)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User password updated.");
+
+                            // let the user know that he has to login with the new email adress
+                            Toast.makeText(getContext(), R.string.use_new_password,Toast.LENGTH_SHORT).show();
+
+                            // return to settings
+                            MainActivity.navigation.setSelectedItemId(R.id.navigation_settings);
+                        }
+                    }
+                });
     }
 }
