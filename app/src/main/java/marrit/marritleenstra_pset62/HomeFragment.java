@@ -145,13 +145,15 @@ public class HomeFragment extends Fragment {
             double co2 = mUser.getCO2Avoided();
             double animals = mUser.getAnimalsSaved();
 
+            // hide question
+            mQuestion.setVisibility(View.INVISIBLE);
+            mYesButton.setVisibility(View.INVISIBLE);
+            mNoButton.setVisibility(View.INVISIBLE);
+
             // update database based on button clicked
             if (view == mYesButton) {
 
-                // hide question
-                mQuestion.setVisibility(View.INVISIBLE);
-                mYesButton.setVisibility(View.INVISIBLE);
-                mNoButton.setVisibility(View.INVISIBLE);
+                // display clickedYes message
                 mClickedYes.setVisibility(View.VISIBLE);
 
                 // update user's values
@@ -169,10 +171,7 @@ public class HomeFragment extends Fragment {
             }
             else if (view == mNoButton) {
 
-                // hide question
-                mQuestion.setVisibility(View.INVISIBLE);
-                mYesButton.setVisibility(View.INVISIBLE);
-                mNoButton.setVisibility(View.INVISIBLE);
+                // display clickedNO message
                 mClickedNo.setVisibility(View.VISIBLE);
 
                 mDatabase.child("users").child(mUID).child("clickedToday").setValue(true);
