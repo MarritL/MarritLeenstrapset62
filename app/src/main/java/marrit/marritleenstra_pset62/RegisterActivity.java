@@ -73,8 +73,6 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
 
         @Override
         public void onClick(View view) {
-
-            System.out.println(TAG + "onClick called");
             attemptRegister();
         }
     }
@@ -95,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
     }
 
 
-    // register user with firebase authentication
+    // check if all field in the form are valid
     private void attemptRegister() {
 
         // reset errors
@@ -103,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
         mPasswordView.setError(null);
 
         // store values at the time of the register attempt
-        final String email = mEmailView.getText().toString();
+        String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String passwordRepeat = mPasswordRepeatView.getText().toString();
 
@@ -141,71 +139,82 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
             // there was an error; don't attempt login and focus the first
             // form field with an error
             focusView.requestFocus();
-            System.out.println("before return");
-            return;
         } else {
-            // kick off a background task to perform the user login attempt.
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+            // all is valid: kick off a background task to perform the user registration
+            register(email, password);
+        }
+    }
 
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+    // register the user with FireBase authentication
+    public void register(final String email, String password){
 
-                            // if sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(RegisterActivity.this, R.string.auth_failed,
-                                        Toast.LENGTH_SHORT).show();
-                                try {
-                                    throw task.getException();
-                                } catch(FirebaseAuthWeakPasswordException e) {
-                                    mPasswordView.setError(getString(R.string.error_invalid_password));
-                                    mPasswordView.requestFocus();
-                                } catch(FirebaseAuthInvalidCredentialsException e) {
-                                    mEmailView.setError(getString(R.string.error_invalid_email));
-                                    mEmailView.requestFocus();
-                                } catch(FirebaseAuthUserCollisionException e) {
-                                    mEmailView.setError(getString(R.string.error_user_exists));
-                                    mEmailView.requestFocus();
-                                } catch(Exception e) {
-                                    Log.e(TAG, e.getMessage());
-                                }
-                            } else {
-                                Toast.makeText(RegisterActivity.this, R.string.auth_succes,
-                                        Toast.LENGTH_SHORT).show();
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
 
-                                // first download of recipes
-                                RecipesHelper recipesHelper = new RecipesHelper(RegisterActivity.this);
-                                recipesHelper.getRecipes(RegisterActivity.this);
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                                // create user with UID, email and displayname
-                                String displayname = mDisplaynameView.getText().toString();
-
-                                // if user didn't give displayname use a default
-                                if(displayname.equals("")) {
-                                    displayname = email;
-                                    displayname = displayname.split("@")[0];
-                                }
-                                FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                                String mUid = null;
-                                if (firebaseUser != null) {
-                                    mUid = firebaseUser.getUid();
-                                }
-
-                                // add object to the database
-                                User user = new User(mUid, email, displayname);
-                                mDatabase.child("users").child(mUid).setValue(user);
-
-                                // go back to the signIn Activity
-                                Intent intent = new Intent(RegisterActivity.this, SignInActivity.class);
-                                RegisterActivity.this.startActivity(intent);
+                        // if sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this, R.string.auth_failed,
+                                    Toast.LENGTH_SHORT).show();
+                            try {
+                                throw task.getException();
+                            } catch(FirebaseAuthWeakPasswordException e) {
+                                mPasswordView.setError(getString(R.string.error_invalid_password));
+                                mPasswordView.requestFocus();
+                            } catch(FirebaseAuthInvalidCredentialsException e) {
+                                mEmailView.setError(getString(R.string.error_invalid_email));
+                                mEmailView.requestFocus();
+                            } catch(FirebaseAuthUserCollisionException e) {
+                                mEmailView.setError(getString(R.string.error_user_exists));
+                                mEmailView.requestFocus();
+                            } catch(Exception e) {
+                                Log.e(TAG, e.getMessage());
                             }
+                        } else {
+                            // registration succesful
+                            createData(email);
 
                         }
-                    });
+
+                    }
+                });
+    }
+
+    // create user object and save to database, create recipeHelper data request
+    public void createData(String email){
+        Toast.makeText(RegisterActivity.this, R.string.auth_succes,
+                Toast.LENGTH_SHORT).show();
+
+        // first download of recipes
+        RecipesHelper recipesHelper = new RecipesHelper(RegisterActivity.this);
+        recipesHelper.getRecipes(RegisterActivity.this);
+
+        // create user with UID, email and displayname
+        String displayname = mDisplaynameView.getText().toString();
+
+        // if user didn't give displayname use a default
+        if(displayname.equals("")) {
+            displayname = email;
+            displayname = displayname.split("@")[0];
         }
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        String mUid = null;
+        if (firebaseUser != null) {
+            mUid = firebaseUser.getUid();
+        }
+
+        // add object to the database
+        User user = new User(mUid, email, displayname);
+        mDatabase.child("users").child(mUid).setValue(user);
+
+        // go back to the signIn Activity
+        Intent intent = new Intent(RegisterActivity.this, SignInActivity.class);
+        RegisterActivity.this.startActivity(intent);
     }
 
     // callbacks from RecipesHelper
@@ -220,6 +229,7 @@ public class RegisterActivity extends AppCompatActivity implements RecipesHelper
 
     @Override
     public void gotError(String message) {
+        Log.d(TAG, message);
     }
 
 }
