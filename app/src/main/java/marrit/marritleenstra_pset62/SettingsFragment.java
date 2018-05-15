@@ -33,7 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by Marrit Leenstra. 4-5-2018
- * Fragment where user can change the app and user settings
+ * Fragment where user can change the user account settings
  */
 public class SettingsFragment extends Fragment {
 
@@ -138,6 +138,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+
     public class changeDisplayName implements View.OnClickListener {
 
         @Override
@@ -146,6 +147,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+
     public class unsubscribeClicked implements View.OnClickListener {
 
         @Override
@@ -153,6 +155,7 @@ public class SettingsFragment extends Fragment {
             showAreYouSureDialog();
         }
     }
+
 
     // show dialog that makes sure if the user really wants to delete the account
     private void showAreYouSureDialog() {
@@ -166,39 +169,7 @@ public class SettingsFragment extends Fragment {
         dialogBuilder.setPositiveButton("Delete account", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
-
-                System.out.println(TAG + ": on delete called");
-
-                // sign-out (before deleting from database)
-                FirebaseAuth.getInstance().signOut();
-
-                Intent newIntent = new Intent(getActivity(), SignInActivity.class);
-                getActivity().startActivity(newIntent);
-
-                // delete the userdata from the database
-                mDatabase.child("recipes").child(mUid).removeValue();
-                mDatabase.child("users").child(mUid).removeValue();
-
-                System.out.println(TAG + ": after database values removed");
-
-                // block of code from firebase guide on user management
-                mFirebaseUser.delete()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "User account deleted.");
-
-                                }
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                System.out.println(TAG + e);
-                            }
-                        });
-
+                deleteUser();
             }
 
         });
@@ -210,6 +181,7 @@ public class SettingsFragment extends Fragment {
         AlertDialog changeDisplayName = dialogBuilder.create();
         changeDisplayName.show();
     }
+
 
     // show a dialog which allows user to change the display name
     private void showDisplayNameDialog() {
@@ -227,19 +199,7 @@ public class SettingsFragment extends Fragment {
         dialogBuilder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
-
-                String mNewDisplayName = mDisplayName.getText().toString();
-
-                // check if user gave displayName
-                if (mNewDisplayName.equals("")) {
-                    // if not set default displayname
-                    mNewDisplayName = mFirebaseUser.getEmail();
-                    mNewDisplayName = mNewDisplayName.split("@")[0];
-                }
-
-                // update displayname in database
-                mDatabase.child("users").child(mUid).child("displayName").setValue(mNewDisplayName);
-                System.out.println(TAG + ": displayname changed");
+            changeDisplayName();
             }
 
         });
@@ -252,6 +212,7 @@ public class SettingsFragment extends Fragment {
         changeDisplayName.show();
     }
 
+
     // cancel listener for dialog box
     public class CancelListener implements DialogInterface.OnClickListener {
 
@@ -259,6 +220,56 @@ public class SettingsFragment extends Fragment {
         public void onClick(DialogInterface dialog, int whichButton) {
             // do nothing and go back
         }
+    }
+
+
+    // delete user from database and authentication
+    public void deleteUser(){
+
+        // sign-out (before deleting from database)
+        FirebaseAuth.getInstance().signOut();
+
+        // go back to sign in activity
+        Intent newIntent = new Intent(getActivity(), SignInActivity.class);
+        getActivity().startActivity(newIntent);
+
+        // delete the userdata from the database
+        mDatabase.child("recipes").child(mUid).removeValue();
+        mDatabase.child("users").child(mUid).removeValue();
+
+        // block of code from firebase guide on user management
+        mFirebaseUser.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User account deleted.");
+
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, e.toString());
+                    }
+                });
+    }
+
+
+    // change the display name in the database
+    private void changeDisplayName(){
+        String mNewDisplayName = mDisplayName.getText().toString();
+
+        // check if user gave displayName
+        if (mNewDisplayName.equals("")) {
+            // if not set default displayname
+            mNewDisplayName = mFirebaseUser.getEmail();
+            mNewDisplayName = mNewDisplayName.split("@")[0];
+        }
+
+        // update displayname in database
+        mDatabase.child("users").child(mUid).child("displayName").setValue(mNewDisplayName);
     }
 
 }
