@@ -24,7 +24,7 @@ public class MyNightJobs extends BroadcastReceiver implements RecipesHelper.Call
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        System.out.println(TAG + " alarm received");
+        Log.d(TAG, "alarm received");
         mUid = intent.getStringExtra("USERUID");
 
         updateRunstreak(mUid);
@@ -38,7 +38,7 @@ public class MyNightJobs extends BroadcastReceiver implements RecipesHelper.Call
     @Override
     public void gotRecipes(ArrayList<Recipe> recipesArrayList, Context mContext) {
 
-        System.out.println(TAG + " got recipes");
+        // save recipes in database
         RecipeLab recipeLab = RecipeLab.getInstance();
         recipeLab.safeToDatabase(recipesArrayList);
         recipeLab.fillRecipeArray();
@@ -79,7 +79,7 @@ public class MyNightJobs extends BroadcastReceiver implements RecipesHelper.Call
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Failed to read value
-                Log.w(TAG, "Failed to read value.", databaseError.toException());
+                Log.d(TAG, "Failed to read value.", databaseError.toException());
             }
         };
         mDatabase.addListenerForSingleValueEvent(listener);

@@ -1,6 +1,5 @@
 package marrit.marritleenstra_pset62;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -64,7 +62,7 @@ public class HomeFragment extends Fragment {
         mUser = (User) getArguments().getSerializable("USERDATA");
         mUid = mUser.getUID();
 
-        // initiate firebase references
+        // initiate firebase
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // get recipe data
@@ -140,9 +138,6 @@ public class HomeFragment extends Fragment {
         @Override
         public void onClick(View view) {
 
-            // get database reference
-            mDatabase = FirebaseDatabase.getInstance().getReference();
-
             // get the user's values
             String mUID = mUser.getUID();
             int daysVegetarian = mUser.getDaysVegetarian();
@@ -159,9 +154,6 @@ public class HomeFragment extends Fragment {
                 mNoButton.setVisibility(View.INVISIBLE);
                 mClickedYes.setVisibility(View.VISIBLE);
 
-
-                mDatabase.child("users").child(mUID).child("clickedToday").setValue(true);
-
                 // update user's values
                 daysVegetarian++;
                 runStreak++;
@@ -169,6 +161,7 @@ public class HomeFragment extends Fragment {
                 animals = animals+0.2;
 
                 // update user's values
+                mDatabase.child("users").child(mUID).child("clickedToday").setValue(true);
                 mDatabase.child("users").child(mUID).child("daysVegetarian").setValue(daysVegetarian);
                 mDatabase.child("users").child(mUID).child("runStreak").setValue(runStreak);
                 mDatabase.child("users").child(mUID).child("co2Avoided").setValue(co2);

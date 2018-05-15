@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -21,10 +22,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     public static final int NOTIFICATION_ID = 1;
 
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        System.out.println(TAG + " alarm received");
+        Log.d(TAG, "alarm received");
 
         long when = System.currentTimeMillis();
 
@@ -51,8 +51,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setVibrate(new long[]{1000,1000})
                 .setSound(alarmSound);
 
-
-
         // show the notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(NOTIFICATION_ID, mNotificationBuilder.build());
@@ -67,8 +65,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             String description = "reminds user to let the app know if it was a vegetarian day";
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "reminder", importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
