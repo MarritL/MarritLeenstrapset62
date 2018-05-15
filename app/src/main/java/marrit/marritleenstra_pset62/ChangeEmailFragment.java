@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,7 +44,6 @@ public class ChangeEmailFragment extends Fragment {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,68 +63,84 @@ public class ChangeEmailFragment extends Fragment {
         // set listeners
         mChangeEmail.setOnClickListener(new changeEmailOnClick());
 
-
         return view;
     }
 
-    private class changeEmailOnClick implements View.OnClickListener{
+
+    // onClick listener
+    private class changeEmailOnClick implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
+            attemptChangeEmail();
+        }
+    }
+
+
+    // check if all the fields in the form are valid
+    private void attemptChangeEmail(){
 
             // get current user info
-            mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (mFirebaseUser!= null) {
             mUID = mFirebaseUser.getUid();
-
-            boolean cancel = false;
-            View focusView = null;
-
-            // Check if new email is valid
-            mEmail = mNewEmail.getText().toString();
-
-            // Check for a valid email address.
-            if (TextUtils.isEmpty(mEmail)) {
-                mNewEmail.setError(getString(R.string.error_field_required));
-                focusView = mNewEmail;
-                cancel = true;
-            } else if (!RegisterActivity.isEmailValid(mEmail)) {
-                mNewEmail.setError(getString(R.string.error_invalid_email));
-                focusView = mNewEmail;
-                cancel = true;
-            }
-
-            if (cancel) {
-                // There was an error; don't attempt to change password and focus
-                // form field with an error.
-                focusView.requestFocus();
-                System.out.println(TAG + ": before return");
-            }
-            else {
-                // change emailadress
-                // block of code from firebase guide on user management
-                mFirebaseUser.updateEmail(mEmail)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "User email address updated.");
-
-                                    // let the user know that he has to login with the new email adress
-                                    Toast.makeText(getContext(), R.string.use_new_emailadress,Toast.LENGTH_SHORT).show();
-
-                                    // get database reference
-                                    mDatabase = FirebaseDatabase.getInstance().getReference();
-
-                                    // update email address in database as well
-                                    mDatabase.child("users").child(mUID).child("email").setValue(mEmail);
-
-                                    // return to settings
-                                    MainActivity.navigation.setSelectedItemId(R.id.navigation_settings);
-                                }
-                            }
-                        });
-            }
         }
+
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check if new email is valid
+        mEmail = mNewEmail.getText().toString();
+
+        // Check for a valid email address
+        if (TextUtils.isEmpty(mEmail)) {
+            mNewEmail.setError(getString(R.string.error_field_required));
+            focusView = mNewEmail;
+            cancel = true;
+        } else if (!RegisterActivity.isEmailValid(mEmail)) {
+            mNewEmail.setError(getString(R.string.error_invalid_email));
+            focusView = mNewEmail;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt to change password and focus
+            // form field with an error.
+            focusView.requestFocus();
+        }
+        else {
+            // form is valid: change emailadress
+            changeEmail();
+        }
+    }
+
+
+    // change emailadress in FireBase authentication and database
+    private void changeEmail() {
+
+        // block of code from firebase guide on user management
+        mFirebaseUser.updateEmail(mEmail)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User email address updated.");
+
+                            // let the user know that he has to login with the new email adress
+                            Toast.makeText(getContext(), R.string.use_new_emailadress, Toast.LENGTH_SHORT).show();
+
+                            // get database reference
+                            mDatabase = FirebaseDatabase.getInstance().getReference();
+
+                            // update email address in database as well
+                            mDatabase.child("users").child(mUID).child("email").setValue(mEmail);
+
+                            // return to settings
+                            MainActivity.navigation.setSelectedItemId(R.id.navigation_settings);
+                        }
+                    }
+                });
     }
 
 
