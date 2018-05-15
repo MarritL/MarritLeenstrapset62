@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.container_fragment, homeFragment);
                     transaction.addToBackStack(null);
-                    transaction.commit();
+                    transaction.commitAllowingStateLoss();
 
                     return true;
                 case R.id.navigation_user:
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     FragmentTransaction newTransaction = getSupportFragmentManager().beginTransaction();
                     newTransaction.replace(R.id.container_fragment, userFragment);
                     newTransaction.addToBackStack(null);
-                    newTransaction.commit();
+                    newTransaction.commitAllowingStateLoss();
 
                     return true;
 
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     FragmentTransaction communityTransaction = getSupportFragmentManager().beginTransaction();
                     communityTransaction.replace(R.id.container_fragment, communityFragment);
                     communityTransaction.addToBackStack(null);
-                    communityTransaction.commit();
+                    communityTransaction.commitAllowingStateLoss();
 
                     return true;
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
                     settingsTransaction.replace(R.id.container_fragment, settingsFragment);
                     settingsTransaction.addToBackStack(null);
-                    settingsTransaction.commit();
+                    settingsTransaction.commitAllowingStateLoss();
 
                     return true;
             }
@@ -129,15 +129,53 @@ public class MainActivity extends AppCompatActivity {
         // restore shared preferences
         settings = getSharedPreferences(PREFS_NAME, 0);
         mOnLaunchDone = settings.getBoolean(FIRST_LAUNCH_DONE, false);
-        System.out.println(TAG + " mFirstlaunchDone3: " + mOnLaunchDone);
 
         // set up fireBase
-        mAuth = FirebaseAuth.getInstance();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mUid = firebaseUser.getUid();
+        setUpFirebase();
 
         // check if user is signed in.
+        isUserSignedIn();
+
+        // set up bottomnavigation
+        navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        // read from fireBase database
+        readFromDatabase();
+
+        // run everything that has to be done on first time launch
+        if (!mOnLaunchDone) {
+            setRecurringAlarm(MainActivity.this, 19, 00, AlarmReceiver.class);
+            setRecurringAlarm(this, 03, 10, MyNightJobs.class);
+            mOnLaunchDone = true;
+        }
+
+    }
+
+    // schedule daily alarms
+    private void setRecurringAlarm(Context context, int hour, int minute, Class receiver) {
+
+        // set the alarm at given time
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        Log.d(TAG, "alarm was set at" + calendar.getTimeInMillis());
+
+        // set action
+        Intent intent = new Intent(context, receiver);
+        intent.putExtra("USERUID", mUid);
+        PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // set repeating interval
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingAlarmIntent);
+    }
+
+
+    // check if user is signed in
+    private void isUserSignedIn(){
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -154,10 +192,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+    }
 
-        navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+    // read from database
+    private void readFromDatabase(){
         // read from fireBase database
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -165,92 +203,75 @@ public class MainActivity extends AppCompatActivity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
 
-                // get current user data
-                mUser = dataSnapshot.child("users").child(mUid).getValue(User.class);
+                // update user data
+                updateUser(dataSnapshot);
 
-                // display displayName in the bottomNavigation
-                // check again if user is not null (evoked error when user unsubscribed)
-                if (mUser != null) {
-                    String mDisplayname = mUser.getDisplayName();
-                    navigation.getMenu().findItem(R.id.navigation_user).setTitle(mDisplayname);
-
-                    // on launch the hometab is opened (initiated here, because needs the user data)
-                    if (mUser.getOnLaunch()){
-                        Log.d(TAG,"in mUser.getOnLaunch()");
-                        navigation.setSelectedItemId(R.id.navigation_home);
-                        mDatabase.child("users").child(mUid).child("onLaunch").setValue(false);
-                    }
-                }
-
-                // when data changed set all the community values to 0
-                mSumDays = 0;
-                mSumAnimals = 0;
-                mSumCO2 = 0;
-                mSumParticipantsToday = 0;
-                mSumParticipants = 0;
-
-                // set the community values
-                for (DataSnapshot ds : dataSnapshot.child("users").getChildren()) {
-
-
-                    // get values of all users in database
-                    int DaysCommunityUser = Integer.valueOf(ds.child("daysVegetarian").getValue().toString());
-                    double AnimalsCommunityUser = Double.valueOf(ds.child("animalsSaved").getValue().toString());
-                    double CO2CommunityUser = Double.valueOf(ds.child("co2Avoided").getValue().toString());
-                    boolean mClickedToday = Boolean.valueOf(ds.child("clickedToday").getValue().toString());
-
-
-                    mSumDays = mSumDays + DaysCommunityUser;
-                    mSumAnimals = mSumAnimals + AnimalsCommunityUser;
-                    mSumCO2 = mSumCO2 + CO2CommunityUser;
-                    mSumParticipants += 1;
-                    if (mClickedToday){
-                        mSumParticipantsToday +=1;
-                    }
-                }
-
+                // update community data
+                updateCommunity(dataSnapshot);
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+                Log.d(TAG, "Failed to read value.", error.toException());
             }
         });
+    }
 
-        // run everything that has to be done on first time launch
-        System.out.println(TAG + " mFirstLaunchDone1 =" + mOnLaunchDone);
-        if (!mOnLaunchDone) {
-            setRecurringAlarm(MainActivity.this, 19, 00, AlarmReceiver.class);
-            setRecurringAlarm(this, 03, 10, MyNightJobs.class);
+    // update user data
+    private void updateUser(DataSnapshot dataSnapshot){
+        // get current user data
+        mUser = dataSnapshot.child("users").child(mUid).getValue(User.class);
 
-            mOnLaunchDone = true;
-            System.out.println(TAG + " mFirstLauncheDone2 =" + mOnLaunchDone);
+        // display displayName in the bottomNavigation
+        if (mUser != null) {
+            String mDisplayname = mUser.getDisplayName();
+            navigation.getMenu().findItem(R.id.navigation_user).setTitle(mDisplayname);
+
+            // on launch the hometab is opened (initiated here, because needs the user data)
+            if (mUser.getOnLaunch()){
+                navigation.setSelectedItemId(R.id.navigation_home);
+                mDatabase.child("users").child(mUid).child("onLaunch").setValue(false);
+            }
         }
-
-
     }
 
-    // schedule daily alarms
-    private void setRecurringAlarm(Context context, int hour, int minute, Class receiver) {
+    // update community data
+    private void updateCommunity(DataSnapshot dataSnapshot) {
+        // when data changed set all the community values to 0
+        mSumDays = 0;
+        mSumAnimals = 0;
+        mSumCO2 = 0;
+        mSumParticipantsToday = 0;
+        mSumParticipants = 0;
 
-        // set the alarm at given time
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        Log.d("DEBUG", "alarm was set at" + calendar.getTimeInMillis());
+        // set the community values
+        for (DataSnapshot ds : dataSnapshot.child("users").getChildren()) {
 
-        // set action
-        Intent intent = new Intent(context, receiver);
-        intent.putExtra("USERUID", mUid);
-        PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            // get values of all users in database
+            int DaysCommunityUser = Integer.valueOf(ds.child("daysVegetarian").getValue().toString());
+            double AnimalsCommunityUser = Double.valueOf(ds.child("animalsSaved").getValue().toString());
+            double CO2CommunityUser = Double.valueOf(ds.child("co2Avoided").getValue().toString());
+            boolean mClickedToday = Boolean.valueOf(ds.child("clickedToday").getValue().toString());
 
-        // set repeating interval
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, pendingAlarmIntent);
+            // sum the values of every user
+            mSumDays = mSumDays + DaysCommunityUser;
+            mSumAnimals = mSumAnimals + AnimalsCommunityUser;
+            mSumCO2 = mSumCO2 + CO2CommunityUser;
+            mSumParticipants += 1;
+            if (mClickedToday){
+                mSumParticipantsToday +=1;
+            }
+        }
     }
+
+    public void setUpFirebase(){
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mUid = firebaseUser.getUid();
+    }
+
 
     @Override
     public void onStart() {
@@ -273,7 +294,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop(){
         super.onStop();
-        System.out.println(TAG + ": onStop() called");
 
         // save sharedPreferences
         SharedPreferences.Editor editor = settings.edit();
@@ -283,17 +303,6 @@ public class MainActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-
     }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-
-        System.out.println(TAG + ": onDestroy() called");
-
-
-    }
-
 
 }
