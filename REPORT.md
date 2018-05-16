@@ -11,7 +11,7 @@ Vegetariano! is a mobile application helping users in the early stage of vegetar
 The app supports four main functionalities:
 1) Mangage user account
 2) Keep track whether user ate vegetarian at given day
-3) Scoreboard of user and community as a whole
+3) Scoreboard user and community as a whole
 4) Supply user with daily recipes
 
 All four functionalities will now be described seperately, together with the related code.
@@ -51,7 +51,7 @@ One of the most important functionalities of the Vegetariano! app is keeping tra
 
 The following diagram describes the architecture of the 'keep track whether user ate vegetarian at given day' functionality:
 
-<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Pictures/KeepTrack.JPG' width="700" height="350">
+<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Pictures/KeepTrack.JPG' width="700" height="370">
 
 #### HomeFragment
 The homeFragment is very important for the 'keep track whether user ate vegetarian at given day' functionality, since it is the screen where the user can actually let the app know whether he ate vegetarian or not. First the User object is sent from the MainActivity to the HomeFragment. At the top of the screen the 'did you eat vegetarian' question is displayed with two buttons, respectively 'YES' and 'NO' (see very first ScreenShot at the introductin paragraph). At least... when the user did not answer that question yet. This is checked with the clickedToday-getter from the User class. 
@@ -63,10 +63,36 @@ The first time the MainActivity is launched the setRecurringAlarm() function for
 #### AlarmReceiver
 The AlarmReceiver receives an alarm daily at 19.00 o'clock. In the AlarmReceiver class a notification is build. This notification is a reminder for the user that he has to answer the 'did you eat vegetarian' question in the Vegetariano! app. Uppon clicking the notification, the SignInActivity is opened. After signing in, the MainActivity is opened with the HomeFragment in which the question is displayed. 19.00 o'clock has been chosen as triggertime, because it is assumed that the user by then knows whether he ate vegetarian that day or not. 
 
-<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Notification.jpg' width="200" height="280">
+<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Notification.jpg' width="220" height="280">
 
 #### MyNightJobs
 The second alarm is triggered daily around 3.10 at night and received by the MyNightJobs class. The MyNightJobs class has two functions: checking if the user answered the question and download new recipes from the server. The second function will be discussed in the paragraph about the 4th functionality 'Supply user with daily recipes'. When the alarm is received by the MyNightJobs class the updateRunstreak() function will be triggered. In this function a FireBase singleValueEventListener is triggered to read the userdata from the database and save it in the User object. One value is in particular important for the 'keep track whether user ate vegetarian at given day' functionality, namely the 'clickedToday' value. Logically, if a user answered the question (i.e. clicked YES or NO) the user.getClickedToday function (getter from the User class) will return true, if not it will return false. If the user did not answer the question, his runstreak will be set to 0 in the database and other values do not change, since it is considered as a NO answer. If he indeed did answer the question, the user values are already handeled in the database when he clicked YES or NO. The clickedToday value will be set to false again in the database, so that the user can answer the question again on the day to come. 
+
+### 3. Scoreboard user and community as a whole
+The third main functionality is displaying a scoreboard to the user. In this scoreboard he can see how many days he followed a vegetarian diet (both in a row and as a whole) and how much savings of animal lives and CO2 emissions this is yielding. Furthermore he can see the scoreboard for the whole community in which the values of all users are summed. The functionality of registration of the vegetarian days is already explained in the paragraph about the 2th functionality 'Keep track whether user ate vegetarian at given day'. This paragraph regards only the displaying of the scoreboards. Examples of the user and community scoreboards are displayed below.
+
+<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/User.jpg' width="200" height="400"> <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Screenshots/Community.jpg' width="200" height="400">
+
+The following diagram describes the architecture of the 'Scoreboard user and community as a whole' functionality:
+
+<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Pictures/Scoreboard.JPG' width="700" height="370">
+
+#### MainActivity
+The main activity takes care of reading the User values from the database. It does so in the readFromDatabase() function which is called in the activities onCreate(). The readFromDatabase creates a FireBase valueEventListener, which is called once when created and again
+whenever data in the database is updated. Inside the valueEventListeners onDataChange(), an updateUser() function is called. This function creates a User object with the data from the database. This object will therefor be renewed every time a value in the database changes. Inside this function as well the first 'tab' (homeFragement) in the bottomnavigation is selected, if the getOnLaunch() (getter from the User class) will return true. In this way, when the activity is created for the first time, the user won't see a white screen. The updateUser() function has been chosen as place to inititate the first tab, because the homeFragment needs the userData. Once the homeFragment is selected the boolean 'onLaunch' is set to false in the database. In this way, with when navigating away from the MainActivity and returning, the homeFragment won't be selected automatically anymore. When one of homeFragment or userFragment is selected in the bottomNavigation, the User object will be send inside a bundle as an argument to the Fragment. In this way, the Fragments always have the latest userdata.
+
+#### UserFragment
+The UserFragment does nothing more then use the getters from the User class on the User Object that it got with the argument in the Fragment transaction, to display the user's values in a scoreboard. Since the runStreak works as an important motivater to keep the user commited to the vegetarian diet (i.e. if he reaches a high runStreak, he doesn't want to return to 0 by skipping the diet one day), the runStreak is highlighted in a more prominent place. All the other values are displayed in line below. It has been chosen to display the total animals saved in 'chicken', because the meat of 1 chicken happens to be on average 1kg (average slaughter weight / 2. Because the meat composes ca. half of the animals slaughter weight (CBS, 2016)). Therefor every kg of meat not eaten, saves one chicken. Since the average meat consumption of a Dutch person is 76.8kg per year (CBS, 2016), the daily meat consumption is assumed to be 76.8/365 = 0.2kg. Therefor, every day the user saves 0.2 chicken and in 5 days this adds up to 1 chicken. The CO2 emission avoided is displayed in kg and a review of 14 articles revieled that a vegetarian diet avoids the emission of 540kg CO2-equivalent yearly (Hallström, Carlsson-Kanyama and Börjesson, 2014). Daily this is 540/365 = ca. 1.5 kg. Therefor every vegetarian day the CO2 emission avoided will be plussed with 1.5kg. These calculations are explained to the user in a dialog when he clickes the info-button, through the onInfoClickListener and showInfoDialog() function. Sources: Hallström, E., Carlsson-Kanyama, A., and Börjesson, P. (2015). Environmental impact of dietary change: a systematic review. Journal of Cleaner Production, 91, 1-11. and https://opendata.cbs.nl/statline/#/CBS/nl/dataset/7123slac/table?ts=1525770095591.
+
+#### CommunityLab
+The display of the community data works a little different. Since there is always only one community, a sigleton has been used to represent the this community. The singleton is called the Communitylab and initiated when on sign in, in the prepareData() fucntion via getInstance(). If uppon sign in there is not yet an instance of the communityLab (i.e. first sign in) the constructor CommunityLab() is called and the instance is created. The prepareData() function in the SignInActivity furthermore calles the fillCommunityData() function inside the CommunityLab. The fillCommunityData creates a FireBase onDataChange() ValueEventListener in which all users are passed by in a for-loop. In this way the values off all users can be summed in the respective community values. Once these summed values are created a Community Object is created or updated with the updateCommunity() function if there was a Community Object already. Other activities or fragments can get this object with the getCommunity() function.
+
+#### SplashActivity
+The splashActivity does nothing more then delaying the opening of the MainActivity from the SignInActivity with 1500 milliseconds (i.e. 1.5 second). This is needed because the fillCommunityData function works asynchronously. Therefor when the SignInActivity calls this function, it will right away proceed with the other functions and eventually go to the MainActivity. Without the SplashActivity it can be that fillCommunityData is not done yet when the getCommunity() function is called. This would then return a null pointer Error, becuase the Community object would not have been created yet. The same counts for the RecipeLab singleton functions which will be described in the paragraph about the 4th funcionality 'Supply user with daily recipes'. Experimentation with the delay gave good results for 1.5 seconds, shorter caused sometimes null pointer errors, longer starts to be annoying.
+
+#### CommunityFragment
+The communityFragment uses the CommunityLab to display the community data in the scoreboard. First it recalls the instance of the communityLab, after which it calls communityLab's the getCommunity() function. As soon as the Community Object is present in the communityFragment it can use the Community class getters to display the 'total days eaten vegetarian', 'total animals saved (chicken)', 'total CO2 emission avoided (kg)', 'total people eating vegetarian today' and 'total participants'. As described before, this are just sums of the individual users values.
+
 
 
 
