@@ -135,7 +135,7 @@ The RecipeDetailHelper works mostly the same as the RecipeHelper. It again is re
 ### Database
 For this project the FireBase database was used. When starting this project only a user child in the database was foreseen. However, also a recipe child was added. The database design looks as follows:
 
-<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/docs/DatabaseReal.JPG' width="300" height="300">
+<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/docs/DatabaseReal.JPG' width="400" height="400">
 
 The recipe child contains a {User-uid} with the associated recipes in a key:value pair. In this way the recipes are connected to the user. As described before, the recipes are saved as a string. It would have been nicer to save the recipes as objects; however, this choice was a result of an earlier idea to save the recipes in the shared preferences. The User child is better structured, with every user saved under this own Uid, with the associated values as key:value pairs. However, the amount of properties per user is quite large and not all values are real properties. For example I would have preferred to save onLaunch in the app itself. However, saving in sharedPreferences was leading to errors, so I moved this value to the database as well. 
 
