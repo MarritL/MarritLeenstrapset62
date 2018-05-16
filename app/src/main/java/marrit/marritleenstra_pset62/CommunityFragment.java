@@ -1,7 +1,5 @@
 package marrit.marritleenstra_pset62;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,7 +22,6 @@ public class CommunityFragment extends Fragment {
     TextView mTotalParticipants;
 
     // variables
-    private static final String TAG = "COMMUNITYFRAGMENT";
     private Community mCommunity;
 
 
@@ -49,14 +46,13 @@ public class CommunityFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_community, container, false);
-        System.out.println(TAG + ": onCreateView()");
 
         // initiate UI components
-        mTotalDaysCommunity = (TextView) view.findViewById(R.id.TV_number_total_days_community);
-        mTotalAnimalsCommunity = (TextView) view.findViewById(R.id.TV_number_total_animals_community);
-        mTotalCO2Community = (TextView) view.findViewById(R.id.TV_number_total_CO2_community);
-        mTotalParticipantsToday = (TextView) view.findViewById(R.id.TV_number_total_participants_today);
-        mTotalParticipants = (TextView) view.findViewById(R.id.TV_number_total_participants);
+        mTotalDaysCommunity = view.findViewById(R.id.TV_number_total_days_community);
+        mTotalAnimalsCommunity = view.findViewById(R.id.TV_number_total_animals_community);
+        mTotalCO2Community = view.findViewById(R.id.TV_number_total_CO2_community);
+        mTotalParticipantsToday = view.findViewById(R.id.TV_number_total_participants_today);
+        mTotalParticipants = view.findViewById(R.id.TV_number_total_participants);
 
         // get community dataStrings
         String mSumDays = String.valueOf(mCommunity.getSumDays());

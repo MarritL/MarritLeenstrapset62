@@ -46,7 +46,6 @@ public class RecipesHelper implements Response.Listener<JSONObject>, Response.Er
 
     // request recipes from yummly API
     void getRecipes(Callback activity) {
-        System.out.println("RECIPESHELPER called getRecipes");
         mCallback = activity;
 
         // fill arrayList with ingredients
@@ -74,7 +73,7 @@ public class RecipesHelper implements Response.Listener<JSONObject>, Response.Er
     @Override
     public void onResponse(JSONObject response) {
 
-        System.out.println(TAG + " got recipes: response: " + response);
+        Log.d(TAG, "got recipes: response: " + response);
 
         ArrayList<Recipe> recipesArrayList = new ArrayList<>();
 
@@ -106,7 +105,7 @@ public class RecipesHelper implements Response.Listener<JSONObject>, Response.Er
                 recipesArrayList.add(recipe);
             }
         } catch (JSONException e) {
-            System.out.println("JSONException: " + e.getMessage());
+            Log.d(TAG, "JSONException: " + e.getMessage());
 
         }
 

@@ -25,7 +25,6 @@ public class RecipeLab {
     private static final String TAG = "RECIPELAB";
 
     public static RecipeLab getInstance() {
-        System.out.println(TAG + ": RecipeLab getInstance called");
         if (sRecipeLab == null){
             sRecipeLab = new RecipeLab();
         }
@@ -34,7 +33,6 @@ public class RecipeLab {
 
     // create a new RecipeLab
     private RecipeLab() {
-        System.out.println(TAG + ": made new RecipeLab()");
         mRecipeArrayList = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -49,7 +47,6 @@ public class RecipeLab {
 
     // fill the ArrayList with the recipes from the database
     public void fillRecipeArray() {
-        System.out.println("RECIPELAB: called fillRecipeArray()");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -59,7 +56,6 @@ public class RecipeLab {
 
                     // get recipes
                     mRecipeArrayList = castToArray(recipes);
-                    System.out.println(TAG + ": done with fillRecipeArray()");
                 }
 
             }
@@ -81,16 +77,6 @@ public class RecipeLab {
             }
         }
         return null;
-    }
-
-    // add recipe to arrayList
-    public void addRecipe(Recipe recipe) {
-        mRecipeArrayList.add(recipe);
-    }
-
-    // delete recipe from arrayList
-    public void deleteRecipe(Recipe recipe) {
-        mRecipeArrayList.remove(recipe);
     }
 
     // cast a string in JSON format (saved like that in database) to a ArrayList
@@ -116,8 +102,6 @@ public class RecipeLab {
         if (mFirebaseUser != null) {
             String uid = mFirebaseUser.getUid();
             mDatabase.child("recipes").child(uid).setValue(jsonRecipes);
-            //mDatabase.child("users").child(uid).child("recipes").setValue(jsonRecipes);
-            System.out.println("RECIPELAB: saved recipes in database");
         }
     }
 }

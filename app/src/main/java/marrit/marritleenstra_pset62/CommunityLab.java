@@ -2,8 +2,6 @@ package marrit.marritleenstra_pset62;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,14 +13,11 @@ public class CommunityLab {
     // variables
     private static CommunityLab sCommunityLab;
     private static DatabaseReference mDatabase;
-    private static FirebaseUser mFirebaseUser;
-    private static User mUser;
     private static Community mCommunity;
     private static final String TAG = "COMMUNITYLAB";
 
     // create instance
     public static CommunityLab getInstance() {
-        System.out.println(TAG + ": getInstance called");
         if (sCommunityLab == null){
             sCommunityLab = new CommunityLab();
         }
@@ -31,14 +26,11 @@ public class CommunityLab {
 
     // create a new CommunityLab
     private CommunityLab() {
-        System.out.println(TAG + ": made new CommunityLab()");
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     // get communitydata
     public Community getCommunity(){
-        System.out.println(TAG + ": GetCommunityData() called");
         return mCommunity;
     }
 
@@ -53,7 +45,6 @@ public class CommunityLab {
 
     // fill the lab with the sum of the userdata from the database
     public void fillCommunityData() {
-        System.out.println(TAG + ": FillCommunityData() called");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -83,6 +74,7 @@ public class CommunityLab {
                         mSumParticipantsToday += 1;
                     }
 
+                    // create or update community object
                     if (mCommunity == null){
                         mCommunity = new Community(mSumDays, mSumAnimals, mSumCO2, mSumParticipants, mSumParticipantsToday);
                     }
@@ -90,7 +82,6 @@ public class CommunityLab {
                         updateCommunity(mSumDays, mSumAnimals, mSumCO2, mSumParticipants, mSumParticipantsToday);
                     }
                 }
-                System.out.println(TAG + ": done with fillCommunityData()");
 
             }
 
