@@ -11,11 +11,11 @@ The app will do mainly four things:
 ## User Interface
 The user interface will consist of a login screen and one activity with three tabs to fullfull the four functions (see sketch). 
 
-<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Pictures/Design.jpg' width="400" height="200">
+<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/docs/Design.jpg' width="400" height="200">
 
 The login screen will be simple and clean, just asking for a username and password, with an OK-button. However, it would be nice to add also other login options like FaceBook-login. The activity will have three tabs (home, user and community). The home screen will display the question (i.e. 'did you eat vegetarian?') and a large picture of the daily recipe featured. Something like the Yummly app (see picture 1), but then with the question above. The User and Community tab will look mostly the same. They will display a kind of scoreboard, with one value in a more prominent place drawing attention to it. For the user-tab this will be most likely the runstreak of total animals saved, and for the CommunityTab most likely the users today or total days. The user and community tab design will look something like the user tab on the Headspace app (see picture 2). The idea for the overall design with three tabs is also based on the Headspace app.
 
-  <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Pictures/Yummly.jpg' width="200" height="400"> <img    src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Pictures/Headspace.jpg' width="200" height="400"> 
+  <img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/docs/Yummly.jpg' width="200" height="400"> <img    src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/docs/Headspace.jpg' width="200" height="400"> 
 
 ## Utility modules, classes and functions
 At the time i started the app I didn't know it was for the final project and therefor I have not made a nice diagram of the utility modules, clases and functions. In the sketch of the UI paragraph, you can see some hints of the ideas I had when I was designing the app. 
@@ -37,6 +37,6 @@ At the time i started the app I didn't know it was for the final project and the
 ## Database
 I will use the FireBase realtime database to save user-data. The structure will look like this:
 
-<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/Pictures/Database.jpg' width="400" height="200">
+<img src='https://github.com/MarritL/MarritLeenstrapset62/blob/master/docs/Database.jpg' width="400" height="200">
      
  
