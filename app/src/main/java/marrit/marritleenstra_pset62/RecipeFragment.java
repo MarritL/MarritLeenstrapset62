@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,8 +82,6 @@ public class RecipeFragment extends Fragment implements RecipeDetailHelper.Fragm
     @Override
     public void gotRecipeDetails(Recipe recipe, Context mContext) {
 
-        System.out.println(TAG + ": gotRecipe: " + recipe);
-
         // update UI
         if(!recipe.getLargeImageUrl().equals("")){
             Picasso.with(getContext())
@@ -109,7 +108,7 @@ public class RecipeFragment extends Fragment implements RecipeDetailHelper.Fragm
 
     @Override
     public void gotError(String message) {
-        System.out.println(TAG + ": gotERROR: " + message);
+        Log.d(TAG, ": gotERROR: " + message);
 
     }
 

@@ -48,7 +48,7 @@ public class MyNightJobs extends BroadcastReceiver implements RecipesHelper.Call
     @Override
     public void gotError(String message) {
 
-        System.out.println(TAG + " got error: " + message);
+        Log.d(TAG, "got error: " + message);
 
     }
 

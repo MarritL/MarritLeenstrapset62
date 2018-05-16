@@ -45,7 +45,6 @@ public class HomeFragment extends Fragment {
     String mSourceUrl;
     String mLogoUrl;
     String mUid;
-    private static final String TAG = "HOMEFRAGMENT";
 
     // Firebase references
     DatabaseReference mDatabase;
@@ -68,8 +67,6 @@ public class HomeFragment extends Fragment {
         // get recipe data
         RecipeLab recipeLab = RecipeLab.getInstance();
         recipesArrayList = recipeLab.getRecipes();
-        System.out.println("HOMEFRAGMENT recipes: " + recipesArrayList);
-
     }
 
     @Override
@@ -77,7 +74,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_home, fragment_container, false);
-        System.out.println(TAG + " onCreateView() called");
 
         // initiate UI components
         mYesButton = v.findViewById(R.id.button_yes);

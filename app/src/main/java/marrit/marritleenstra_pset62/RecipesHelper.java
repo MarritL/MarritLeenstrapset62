@@ -85,7 +85,6 @@ public class RecipesHelper implements Response.Listener<JSONObject>, Response.Er
             String yummlylogo = attribution.getString("logo");
 
             JSONArray matches = response.getJSONArray("matches");
-            System.out.println("matches :" + matches);
 
             for (int i = 0; i < matches.length(); i++) {
                 ArrayList<String> imagesArray = new ArrayList<>();

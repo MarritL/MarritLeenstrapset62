@@ -1,6 +1,7 @@
 package marrit.marritleenstra_pset62;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -54,13 +55,12 @@ public class RecipeDetailHelper implements Response.Listener<JSONObject>, Respon
     @Override
     public void onErrorResponse(VolleyError error) {
         mCallback.gotError(error.getMessage());
-        System.out.println(TAG + " error: " + error.getMessage());
+        Log.d(TAG," error: " + error.getMessage());
     }
 
     @Override
     public void onResponse(JSONObject response) {
 
-        System.out.println(TAG + " response is: " + response);
         String image = "";
 
         // translate all data from JSON to the recipe-class
@@ -101,7 +101,7 @@ public class RecipeDetailHelper implements Response.Listener<JSONObject>, Respon
 
 
         } catch (JSONException e) {
-            System.out.println("JSONException: " + e.getMessage());
+            Log.d(TAG, "JSONException: " + e.getMessage());
 
         }
     }

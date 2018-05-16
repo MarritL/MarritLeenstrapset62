@@ -48,7 +48,6 @@ public class GridViewAdapter extends ArrayAdapter {
 
         // check to see if the view is null and need to be inflated
         if (v == null) {
-
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.grid_item, null);
         }
@@ -75,7 +74,6 @@ public class GridViewAdapter extends ArrayAdapter {
                     .centerInside()
                     .into(IVimageView);
         }
-
         return v;
     }
 

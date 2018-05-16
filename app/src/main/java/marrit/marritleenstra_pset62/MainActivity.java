@@ -34,11 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
     // variables
-    int mSumDays;
-    double mSumAnimals;
-    double mSumCO2;
-    int mSumParticipantsToday;
-    int mSumParticipants;
     User mUser;
     String mUid;
     public static BottomNavigationView navigation;
@@ -205,8 +200,6 @@ public class MainActivity extends AppCompatActivity {
                 // update user data
                 updateUser(dataSnapshot);
 
-                // update community data
-                //updateCommunity(dataSnapshot);
             }
 
             @Override
@@ -235,34 +228,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // update community data
-//    private void updateCommunity(DataSnapshot dataSnapshot) {
-//        // when data changed set all the community values to 0
-//        mSumDays = 0;
-//        mSumAnimals = 0;
-//        mSumCO2 = 0;
-//        mSumParticipantsToday = 0;
-//        mSumParticipants = 0;
-//
-//        // set the community values
-//        for (DataSnapshot ds : dataSnapshot.child("users").getChildren()) {
-//
-//            // get values of all users in database
-//            int DaysCommunityUser = Integer.valueOf(ds.child("daysVegetarian").getValue().toString());
-//            double AnimalsCommunityUser = Double.valueOf(ds.child("animalsSaved").getValue().toString());
-//            double CO2CommunityUser = Double.valueOf(ds.child("co2Avoided").getValue().toString());
-//            boolean mClickedToday = Boolean.valueOf(ds.child("clickedToday").getValue().toString());
-//
-//            // sum the values of every user
-//            mSumDays = mSumDays + DaysCommunityUser;
-//            mSumAnimals = mSumAnimals + AnimalsCommunityUser;
-//            mSumCO2 = mSumCO2 + CO2CommunityUser;
-//            mSumParticipants += 1;
-//            if (mClickedToday){
-//                mSumParticipantsToday +=1;
-//            }
-//        }
-//    }
 
     public void setUpFirebase(){
         mAuth = FirebaseAuth.getInstance();
