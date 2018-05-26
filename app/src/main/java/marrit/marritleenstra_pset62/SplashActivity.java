@@ -8,13 +8,11 @@ import android.os.Bundle;
 public class SplashActivity extends AppCompatActivity {
 
     // variables
-    private static final String TAG = "SPLASHACTIVITY";
     private static final int DURATION = 1500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println(TAG + ": onCreate");
 
         new Handler().postDelayed(new Runnable() {
             @Override

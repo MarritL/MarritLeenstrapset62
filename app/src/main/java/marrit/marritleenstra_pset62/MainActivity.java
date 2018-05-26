@@ -223,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
             // on launch the hometab is opened (initiated here, because needs the user data)
             if (mUser.getOnLaunch()){
                 navigation.setSelectedItemId(R.id.navigation_home);
-                mDatabase.child("users").child(mUid).child("onLaunch").setValue(false);
             }
         }
     }
@@ -267,6 +266,15 @@ public class MainActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        // manage onLaunch data
+        mDatabase.child("users").child(mUid).child("onLaunch").setValue(false);
+
     }
 
 }

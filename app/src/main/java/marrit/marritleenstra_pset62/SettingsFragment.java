@@ -37,8 +37,6 @@ public class SettingsFragment extends Fragment {
     TextView mLogOut;
     TextView mUnsubscribe;
     EditText mDisplayName;
-    EditText mEmail;
-    EditText mPassword;
 
     // variables
     private static final String TAG = "SETTINGSFRAGMENT";
@@ -125,8 +123,7 @@ public class SettingsFragment extends Fragment {
                 getActivity().startActivity(newIntent);
                 getActivity().finish();
 
-                // manage onLaunch data to restart with homeFragment
-                mDatabase.child("users").child(mUid).child("onLaunch").setValue(true);
+
             }
         }
     }
@@ -171,8 +168,8 @@ public class SettingsFragment extends Fragment {
         dialogBuilder.setNegativeButton("Cancel", new CancelListener());
 
         // when the building is done show the dialog in the app screen
-        AlertDialog changeDisplayName = dialogBuilder.create();
-        changeDisplayName.show();
+        AlertDialog areYouSureDialogName = dialogBuilder.create();
+        areYouSureDialogName.show();
     }
 
 
@@ -222,9 +219,13 @@ public class SettingsFragment extends Fragment {
         // sign-out (before deleting from database)
         FirebaseAuth.getInstance().signOut();
 
+        // make sure onLaunch is false, so that homeFragment is not called when deleting data
+        mDatabase.child("users").child(mUid).child("onLaunch").setValue(false);
+
         // go back to sign in activity
         Intent newIntent = new Intent(getActivity(), SignInActivity.class);
         getActivity().startActivity(newIntent);
+        getActivity().finish();
 
         // delete the userdata from the database
         mDatabase.child("recipes").child(mUid).removeValue();
