@@ -31,3 +31,6 @@ Note: all libraries and APIs used in this project have their own licenses. Pleas
 
 ## Better Code Hub
 <img src='https://bettercodehub.com/edge/badge/MarritL/MarritLeenstrapset62?branch=master'>
+
+## Old repository
+During the process at one point it was needed to go back to an older version. However, something went wrong in versioncontrol and this broke the whole app. A new respository was created (this one), to be able to go on with the project. When for some reason older commits need to be viewed: they can be found in the old repository at https://github.com/MarritL/MarritLeenstra-pset6-1.git
