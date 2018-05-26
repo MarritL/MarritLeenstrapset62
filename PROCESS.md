@@ -138,8 +138,14 @@ Marrit Leenstra
 # 8-5-2018
 * Added an information button to explain the user how the caluculations are made. 
 
-# 12-5-2-18
+# 12-5-2018
 * Testing app: practically finished
    * Problem: while testing the app, I found out that the NightJobs are not carried out the way i wanted. 
    * Reason: I am logged out in the night. The NightJobs therefor didn't have the UID to update the data in the database as well as there was no permission to read/write in the database while user logged out.
      * Solution: Added the UID as intent extra with the pendingIntent to the receiver and made read and write rules pulbic in the firebase database.
+
+# 26-5-2018
+* Testing app
+    * Problem: when deleting account error and app stops
+    * Reason: onLaunch was set to false in the saveInstanceState, however, sometimes the account is deleted before the instance state was saved (e.g. user opens app because he wants to delete the account). Then when deleting the data the onDataChange in MainActivity opens the Hometab and the hometab tries to display the recipes. However, the recipes are already deleted.
+      * Solution: extra mangement onLaunch in the delete account function.
